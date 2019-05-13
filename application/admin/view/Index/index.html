@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>首页</title>
+
+<link href="__STATIC__/css/css.css" rel="stylesheet" type="text/css" />
+<link href="__STATIC__/css/style01.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__STATIC__/js/jquery.min.js"></script>
+<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+  <script type="text/javascript" src="__STATIC__/scripts/carousel.js"></script>
+  <style type="text/css">
+    .content{
+      background-color: white;
+      height: 400px;
+    }
+    .element{
+      width: 5000px;
+    }
+  </style>
+  <script type="text/javascript">
+    $(function(){
+      $(".carousel-content").carousel({
+        carousel : ".carousel",//轮播图容器
+        indexContainer : ".img-index",//下标容器
+        prev : ".carousel-prev",//左按钮
+        next : ".carousel-next",//右按钮
+        timing : 2000,//自动播放间隔
+        animateTime : 1000,//动画时间
+        autoPlay : true,//是否自动播放 true/false
+        direction : "left",//滚动方向 right/left
+      });
+
+      $(".carousel-content").hover(function(){
+        $(".carousel-prev,.carousel-next").fadeIn(300);
+      },function(){
+        $(".carousel-prev,.carousel-next").fadeOut(300);
+      });
+
+      $(".carousel-prev").hover(function(){
+        $(this).find("img").attr("src","__STATIC__/images/left2.png");
+      },function(){
+        $(this).find("img").attr("src","__STATIC__/images/left1.png");
+      });
+      $(".carousel-next").hover(function(){
+        $(this).find("img").attr("src","__STATIC__/images/right2.png");
+      },function(){
+        $(this).find("img").attr("src","__STATIC__/images/right1.png");
+      });
+    });
+  </script>
+</head>
+
+<body>
+<div class="header">
+  <div class="admin">
+    <div class="top">
+      <div class="top_lf"><img src="__STATIC__/images/puruishi_02.jpg" width="422" height="78" /></div>
+      <div class="top_rt">
+        <form id="form1" name="form1" method="post" action="">
+          <input type="image" name="imageField" src="__STATIC__/images/puruishi_05.jpg" class="rt"/>
+          <input name="textfield" type="text" class="top_in" value="Search..."/>
+        </form>
+      </div>
+    </div>
+    {include file="../application/admin/view/public/common.html" /}
+    <block name="nav"></block>
+
+   <div class="cls"></div>
+  </div>
+
+
+</div>
+<!-- <div class="banner" style="background-image:url(__STATIC__/images/puruishi_11.jpg)"></div> -->
+<div class="content">
+    <div class="a-content">
+      <div class="carousel-content">
+        <ul class="carousel">
+          <li><img src="__STATIC__/images/puruishi_11.jpg" width="50%"></li>
+          <li><img src="__STATIC__/images/puruishi_11.jpg" width="50%"></li>
+          <li><img src="__STATIC__/images/puruishi_11.jpg" width="50%"></li>
+          <li><img src="__STATIC__/images/puruishi_11.jpg" width="50%"></li>
+          <li><img src="__STATIC__/images/puruishi_11.jpg" width="50%"></li>
+        </ul>
+        <ul class="img-index"></ul>
+        <div class="carousel-prev"><img src="__STATIC__/images/left1.png"></div>
+        <div class="carousel-next"><img src="__STATIC__/images/right1.png"></div>
+      </div>
+    </div>
+  </div>
+<div class="admin sbj_35">
+  <div class="ab_bk">
+    <div class="ab_tt">
+      <span class="lf">about us</span><span class="rt">&nbsp;<img src="__STATIC__/images/puruishi_17.jpg" width="37" height="13" /></span>
+    </div>
+    <div><img src="__STATIC__/images/puruishi_26.jpg" width="215" height="94" alt="" /></div>
+    <div class="ab_jj">Beijing Purui Technology Development Limited is an agent of the inlet valve company, main products are USA TYCO, SMG, Germany ARCA, Germany W+Z, Germany ARI, Australia JINDEX, FISHER and POYAM of Spain America </div>
+  </div>
+
+
+  <div class="cp_bk">
+    <div class="ab_tt"> <span class="lf">product </span><span class="rt">&nbsp;<img src="__STATIC__/images/puruishi_17.jpg" width="37" height="13" /></span> </div>
+    <div>
+      <div class="cp_imbk">
+        <div class="cp_im"><img src="__STATIC__/images/puruishi_28.jpg" width="98" height="86" alt="" /></div>
+        <div class="cp_imtt">Vanessa</div>
+      </div>
+      <div class="cp_imbk2">
+        <div class="cp_im"><img src="__STATIC__/images/puruishi_28.jpg" width="98" height="86" alt="" /></div>
+        <div class="cp_imtt">Vanessa</div>
+      </div>
+      <div class="cp_imbk">
+        <div class="cp_im"><img src="__STATIC__/images/puruishi_28.jpg" width="98" height="86" alt="" /></div>
+        <div class="cp_imtt">Vanessa</div>
+      </div>
+      <div class="cp_imbk2">
+        <div class="cp_im"><img src="__STATIC__/images/puruishi_28.jpg" width="98" height="86" alt="" /></div>
+        <div class="cp_imtt">Vanessa</div>
+      </div>
+
+
+      <div class="cls"></div>
+    </div>
+  </div>
+  <div class="yj_bk">
+    <div class="ab_tt"> <span class="lf">reference </span><span class="rt">&nbsp;<img src="images/puruishi_17.jpg" width="37" height="13" /></span> </div>
+    <div><img src="__STATIC__/images/puruishi_22.jpg" width="215" height="94" alt="" /></div>
+    <div class="yj_tt">Shenyang Blower  |  2014 </div>
+    <div><img src="__STATIC__/images/puruishi_22.jpg" width="215" height="94" alt="" /></div>
+    <div class="yj_tt">Shenyang Blower  |  2014 </div>
+    
+  </div>
+  <div class="new_bk">
+    <div class="ab_tt"> <span class="lf">News </span><span class="rt">&nbsp;<img src="images/puruishi_17.jpg" width="37" height="13" /></span> </div>
+    <div><img src="__STATIC__/images/puruishi_24.jpg" width="215" height="94" alt="" /></div>
+    <div class="new_dt">GE Energy Management</div>
+    <div class="new_jj">Energy Management is GE¡¯s electrification business. Global teams design </div>
+    <ul class="new_ul">
+      <li class="new_li">¡¤ Mar 10, 2014  GE Releases 2013 </li>
+      <li class="new_li">¡¤ Mar 10, 2014  GE Releases 2013 </li>
+    </ul>
+  </div>
+  <div class="cls"></div>
+</div>
+<div class="footer sbj_35"> 2014 PetrolValves. All rights reserved. | Website Design by Bothwell Marketing, Inc.</div>
+</body>
+</html>

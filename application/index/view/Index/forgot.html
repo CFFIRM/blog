@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Carbon - Admin Template</title>
+    <link rel="stylesheet" href="__STATIC__/vendor/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="__STATIC__/vendor/font-awesome/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="__STATIC__/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/mdialog.css">
+</head>
+<body>
+<div class="page-wrapper flex-row align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card p-4">
+                    <div class="card-header text-center text-uppercase h4 font-weight-light">
+                        Forgot
+                    </div>
+                    <form action="{:url('forgot')}" method="post">
+                        <div class="card-body py-5">
+                            <div class="form-group">
+                                <label class="form-control-label">Username</label>
+                                <input type="text" name="admin_login_name" id="admin_login_name" required="required" maxlength="6" pattern="[A-z]{4,6}" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-control-label">Password</label>
+                                <input type="password" name="admin_login_pwd" id="admin_login_pwd" required="required" maxlength="15" pattern="[A-z0-9]{6,15}" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-control-label">Confirm Password</label>
+                                <input type="password" name="again_pwd" id="again_pwd" required="required" maxlength="15" pattern="[A-z0-9]{6,15}" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-6">
+                                    <!-- <button  class="btn btn-primary px-5">Login</button> -->
+                                    <input type="submit" name="" id="sub_btn" class="btn btn-primary px-5" value="Submit">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="t01">
+        
+    </div>
+</div>
+<script type="text/javascript" src="__STATIC__/js/zepto.min.js"></script>
+<script type="text/javascript" src="__STATIC__/js/mdialog.js"></script>
+<script src="__STATIC__/vendor/jquery/jquery.min.js"></script>
+<script src="__STATIC__/vendor/popper.js/popper.min.js"></script>
+<script src="__STATIC__/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="__STATIC__/vendor/chart.js/chart.min.js"></script>
+<script src="__STATIC__/js/carbon.js"></script>
+<script src="__STATIC__/js/demo.js"></script>
+<script>
+    /*$('#sub_btn').click(function(){
+        var admin_login_name=$('#admin_login_name').val();
+        var admin_login_pwd=$('#admin_login_pwd').val();
+        var again_pwd=$('#again_pwd').val();
+        console.log(admin_login_name);
+        $.ajax({
+            url:"{:url('forgot')}",
+            dataType:"json",
+            type:"POST",
+            data:{admin_login_name:admin_login_name,admin_login_pwd:admin_login_pwd,again_pwd:again_pwd},
+            success:function(res){
+                if(res.code==1){
+                     new TipBox({type:'load',str:"努力加载中..",setTime:1500,callBack:function(){  
+                        new TipBox({type:'success',str:'登录成功',hasBtn:true});  
+                        setTimeout(asdf,2000);
+                    }});
+                     
+                }else{
+                    new TipBox({type:'load',str:"努力加载中..",setTime:1500,callBack:function(){  
+                        new TipBox({type:'error',str:'帐号或密码错误',hasBtn:true});  
+                    }});
+                    
+                }
+            }
+        })
+    })
+    function asdf(){
+        window.location.href="{:url('index/after')}"
+    }*/
+</script>
+</body>
+</html>

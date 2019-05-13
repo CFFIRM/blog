@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Carbon - Admin Template</title>
+    <link rel="stylesheet" href="__STATIC__/vendor/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="__STATIC__/vendor/font-awesome/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="__STATIC__/css/styles.css">
+</head>
+<body class="sidebar-fixed header-fixed">
+<div class="page-wrapper">
+    <nav class="navbar page-header">
+            <a href="#" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
+                <i class="fa fa-bars"></i>
+            </a>
+
+
+            <a href="#" class="btn btn-link sidebar-toggle d-md-down-none">
+                <i class="fa fa-bars"></i>
+            </a>
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item d-md-down-none">
+                    <a href="#">
+                        <i class="fa fa-bell"></i>
+                        <span class="badge badge-pill badge-danger">5</span>
+                    </a>
+                </li>
+
+                <li class="nav-item d-md-down-none">
+                    <a href="#">
+                        <i class="fa fa-envelope-open"></i>
+                        <span class="badge badge-pill badge-danger">5</span>
+                    </a>
+                </li>
+
+                {include file="../application/index/view/Meun/meun.html" /}
+                    <block name="head"></block>
+            </ul>
+        </nav>
+
+    <div class="main-container">
+        {include file="../application/index/view/Meun/meun.html" /}
+        <block name="meun"></block>
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                Basic Forms
+                            </div>
+                            <div class="card-body">
+                                <form action="{:url('power/compilemeun')}" method="post">
+                                    <input type="hidden" name="power_id" value="{$data.power_id}">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="normal-input" class="form-control-label">管理员组:</label>
+                                                <div class="form-group">
+                                                <select  class="form-control" name="meun_id" id="meun_id">
+                                                    <option value="0">一级菜单</option>
+                                                    <option value="1">二级菜单</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="normal-input" class="form-control-label">是否展示:</label>
+                                                <div class="form-group">
+                                                    <label class="radio-inline">
+                                                      <input type="radio" name="is_show"  value="0"> 展示
+                                                      
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="is_show"  value="1"> 不展示  
+                                                    </label>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="form-group" id="t01">
+                                                
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="normal-input" class="form-control-label">菜单名称</label>
+                                                <input id="normal-input" class="form-control" name="power_name" value="{$data.power_name}">
+                                            </div>
+                                            <div class="form-group" id="t02" style="display: none"> 
+                                                <label for="normal-input" class="form-control-label">控制器名称</label>
+                                                <input id="normal-input" id="controller" class="form-control"  name="controller" value="{$data.controller}">
+                                            </div>
+                                            <div class="form-group" id="t03" style="display: none">
+                                                <label for="normal-input" class="form-control-label">方法名称</label>
+                                                <input id="normal-input" id="fucntion" class="form-control" name="function" value="{$data.function}">
+                                            </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fa fa-align-center"></i>提交
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="__STATIC__/vendor/jquery/jquery.min.js"></script>
+<script src="__STATIC__/vendor/popper.js/popper.min.js"></script>
+<script src="__STATIC__/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="__STATIC__/vendor/chart.js/chart.min.js"></script>
+<script src="__STATIC__/js/carbon.js"></script>
+<script src="__STATIC__/js/demo.js"></script>
+<script type="text/javascript">
+    window.onload=function(){
+        $('#meun_id').change(function(){
+                if($(this).val()==1){
+                    $.ajax({
+                    url:"erji",
+                    dataType:"json",
+                    type:"POST",
+                    success:function(res){
+                        console.log(res);
+                        var str='<select class="form-control" name="f_id" id="f_id">';
+                        $.each(res,function(k,v){
+                            str+='<option value="'+v.power_id+'">'+v.power_name+'</option>'
+                        });
+                        str+='</select>';
+                        $('#t01').html(str);
+                        $('#t02').show();
+                        $('#t03').show();
+                    }
+                })
+                }else{
+                    $('#t01').empty();
+                    
+                   $('#t02').hide();
+                        $('#t03').hide();
+                }
+            
+        })
+    }
+        
+</script>
+</body>
+</html>

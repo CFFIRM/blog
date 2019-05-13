@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>联系我们</title>
+<link href="__STATIC__/css/css.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<div class="header">
+  <div class="admin">
+    <div class="top">
+      <div class="top_lf"><img src="__STATIC__/images/puruishi_02.jpg" width="422" height="78" /></div>
+      <div class="top_rt">
+        <form id="form1" name="form1" method="post" action="">
+          <input type="image" name="imageField" src="__STATIC__/images/puruishi_05.jpg" class="rt"/>
+          <input name="textfield" type="text" class="top_in" value="Search..."/>
+        </form>
+      </div>
+    </div>
+    {include file="../application/admin/view/public/common.html" /}
+    <block name="nav"></block>
+
+   <div class="cls"></div>
+  </div>
+
+
+</div>
+<div><img src="images/lxtbg.jpg" style="width:100%" height="3" /></div>
+<div class="admin">
+  <div class="ny_dhbk">首页 &gt; 关于我们</div>
+  <div class="ny_ndtt"></div>
+  <div class="ny_fwnr">
+    {$article.a_content|raw}
+    <p><br />
+    </p>
+  </div>
+
+
+  <div class="cls"></div>
+</div>
+<div class="footer sbj_35"> 2014 PetrolValves. All rights reserved. | Website Design by Bothwell Marketing, Inc.</div>
+</body>
+</html>
