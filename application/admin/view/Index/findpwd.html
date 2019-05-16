@@ -126,31 +126,27 @@
   <div class="title">博客登录</div>
 </div>
   
-<form action="{:url('login')}" method="POST">
+<form action="{:url('findpwd')}" method="POST">
   <div class="wrap" id="wrap">
     <div class="logGet">
         <!-- 头部提示信息 -->
         <div class="logD logDtip">
-          <p class="p1">登录</p>
-        </div>
-        <!-- 输入框 -->
-        <div class="lgD">
-          <input type="text"
-            placeholder="输入用户名" name="user_name" />
+          <p class="p1">找回密码</p>
         </div>
         <div class="lgD">
-          <input type="password"
-            placeholder="输入用户密码" name="user_pwd" />
+          <input type="email"
+            placeholder="请输入您的邮箱" name="user_email" required=""/>
         </div>
         <div class="logC">
-          <input type="submit" class="button" value="Login" name="">
-        </div>
-        <div class="logR">
-          <a href="{:url('findpwd')}" class="a01">找回密码</a>
-          <a href="{:url('register')}" class="a02">注册</a>
+          <input type="submit" class="button" value="Submit" name="">
         </div>
       </div>
   </div>
 </form>
+<script src="__STATIC__/vendor/jquery/jquery.min.js"></script>
+<script type="text/javascript">
+
+  
+</script>
 </body>
 </html>

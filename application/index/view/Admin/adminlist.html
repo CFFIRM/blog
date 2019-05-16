@@ -49,29 +49,37 @@
         <div class="content">
             <div class="row">
                 <div class="card-body">
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="margin-left: -100px;">
                                 <table class="table">
+                                    {if !isset($info[0])}
+                                        <tr>
+                                            <h1 style="text-align: center;">暂无数据</h1>
+                                        </tr>
+                                    {else /}
                                     <thead>
                                     <tr>
                                         <th></th>
                                         <th>ID</th>
                                         <th>管理员名称</th>
                                         <th>管理员最后一次登录时间</th>
+                                        <th>管理员登录次数</th>
                                         <th>操作</th>
                                     </tr>
                                     </thead>
                                     <tbody class="t01">
-                                        {foreach $list as $k=>$v}
-                                            <tr>
+                                        {foreach $info as $k=>$v}
+                                            <tr id="{$v.admin_id}">
                                                 <td><input type="checkbox" class="check" value="{$v.admin_id}"></td>
                                                 <td>{$v.admin_id}</td>
                                                 <td class="text-nowrap">{$v.admin_login_name}</td>
                                                 <td>{$v.admin_last_logintime|date='Y-m-d H:i:s'}</td>
+                                                <td>{$v.admin_login_count}</td>
                                                 <td><a href="{:url('deleteadmin')}?id={$v.admin_id}">删除</a></td>
                                             </tr>
                                     {/foreach}
                                     <button class="deleteall">批量删除</button>
                                     </tbody>
+                                    {/if}
                                 </table>
                             </div>
                         </div>

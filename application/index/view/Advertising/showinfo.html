@@ -51,31 +51,36 @@
                 <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table">
-                                    
-                                    <thead>
-                                    {if $info==""}
-                                    <tr>
-                                        <h1 style="text-align: center;">暂无数据</h1>
-                                    </tr>
+                                    {if !isset($info[0])}
+                                        <tr>
+                                            <h1 style="text-align: center;">暂无数据</h1>
+                                        </tr>
                                     {else /}
+                                    <thead>
                                     <tr>
                                         <th></th>
                                         <th>ID</th>
-                                        <th>链接说明</th>
+                                        <th>广告描述</th>
                                         <th>链接地址</th>
-                                        <th>链接添加时间</th>
+                                        <th>广告添加时间</th>
+                                        <th>广告图片</th>
                                         <th>操作</th>
                                     </tr>
                                     </thead>
                                     <tbody class="t01">
                                         {foreach $info as $k=>$v}
-                                            <tr>
-                                                <td><input type="checkbox" class="check" value="{$v.l_id}"></td>
-                                                <td>{$v.l_id}</td>
-                                                <td>{$v.l_name}</td>
-                                                <td class="text-nowrap">{$v.l_src}</td>
-                                                <td>{$v.l_addtime|date='Y-m-d H:i:s'}</td>
-                                                <td><a href="{:url('deletelink')}?i_id={$v.l_id}">删除</a>|<a href="{:url('updatelink')}?i_id={$v.l_id}">修改</a></td>
+                                            <tr id="{$v.id}">
+                                                <td><input type="checkbox" class="check" value="{$v.id}"></td>
+                                                <td>{$v.id}</td>
+                                                <td>{$v.a_desc}</td>
+                                                <td class="text-nowrap">{$v.a_src}</td>
+                                                <td>{$v.a_addtime|date='Y-m-d H:i:s'}</td>
+                                                {if empty($v.a_img)}
+                                                    <td></td>
+                                                {else /}
+                                                    <td><img src="__STATIC__/uploads/{$v.a_img}" width="150px"></td>
+                                                {/if}
+                                                <td><a href="{:url('deleteadvert')}?id={$v.id}">删除</a>|<a href="{:url('updateadvert')}?id={$v.id}">修改</a></td>
                                             </tr>
                                     {/foreach}
                                     <button class="deleteall">批量删除</button>
@@ -97,7 +102,7 @@
 <script src="__STATIC__/js/carbon.js"></script>
 <script src="__STATIC__/js/demo.js"></script>
     <script>
-        window.onload(
+        window.onload=function(){
             $(document).on('click','.deleteall',function(){
                 var ids=[];
                 $('.check:checked').each(function(){
@@ -128,7 +133,7 @@
                 })
             })
             
-        )
+        }
     </script>
 </body>
 </html>

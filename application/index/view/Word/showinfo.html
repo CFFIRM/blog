@@ -51,7 +51,7 @@
                 <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table">
-                                   {if !isset($info[0])}
+                                    {if !isset($info)}
                                         <tr>
                                             <h1 style="text-align: center;">暂无数据</h1>
                                         </tr>
@@ -60,24 +60,35 @@
                                     <tr>
                                         <th></th>
                                         <th>ID</th>
-                                        <th>链接说明</th>
-                                        <th>链接地址</th>
-                                        <th>链接添加时间</th>
+                                        <th>敏感词</th>
+                                        <th>替换词</th>
+                                        <th>敏感词级别</th>
+                                        <th>敏感词添加时间</th>
+                                        <th>管理员</th>
                                         <th>操作</th>
                                     </tr>
                                     </thead>
                                     <tbody class="t01">
                                         {foreach $info as $k=>$v}
-                                            <tr>
-                                                <td><input type="checkbox" class="check" value="{$v.l_id}"></td>
-                                                <td>{$v.l_id}</td>
-                                                <td>{$v.l_name}</td>
-                                                <td class="text-nowrap">{$v.l_src}</td>
-                                                <td>{$v.l_addtime|date='Y-m-d H:i:s'}</td>
-                                                <td><a href="{:url('deletelink')}?l_id={$v.l_id}">删除</a>|<a href="{:url('updatelink')}?l_id={$v.l_id}">修改</a></td>
+                                            <tr id="{$v.id}">
+                                                <td><input type="checkbox" class="check" value="{$v.id}"></td>
+                                                <td>{$v.id}</td>
+                                                <td>{$v.word_name}</td>
+                                                <td>{$v.word_replace}</td>
+                                                {if $v.word_type==0}
+                                                <td>一般敏感</td>
+                                                {elseif $v.word_type == 1 /}
+                                                <td>比较敏感</td>
+                                                {elseif $v.word_type == 2 /}
+                                                <td>特别敏感</td>
+                                                {/if}
+                                                <td>{$v.word_addtime|date='Y-m-d H:i:s'}</td>
+                                                <td>{$v.admin_name}</td>
+                                                <td><a href="{:url('deleteword')}?id={$v.id}">删除</a>|<a href="{:url('updateword')}?id={$v.id}">修改</a></td>
                                             </tr>
                                     {/foreach}
                                     <button class="deleteall">批量删除</button>
+                                    <a href="{:url('addword')}">敏感词添加</a>
                                     </tbody>
                                     {/if}
                                 </table>
@@ -96,7 +107,7 @@
 <script src="__STATIC__/js/carbon.js"></script>
 <script src="__STATIC__/js/demo.js"></script>
     <script>
-        window.onload(
+        window.onload=function(){
             $(document).on('click','.deleteall',function(){
                 var ids=[];
                 $('.check:checked').each(function(){
@@ -125,9 +136,8 @@
                         $('.t01').html(tr);
                     }
                 })
-            })
-            
-        )
+            });
+        }
     </script>
 </body>
 </html>

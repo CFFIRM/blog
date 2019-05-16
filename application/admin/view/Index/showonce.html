@@ -1,0 +1,395 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>首页</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<link href="__STATIC__/css/base.css" rel="stylesheet">
+<link href="__STATIC__/css/index.css" rel="stylesheet">
+<link href="__STATIC__/css/m.css" rel="stylesheet">
+<script src="__STATIC__/vendor/jquery/jquery.min.js"></script>
+<style type="text/css">
+  .tou{
+    width: 100%;
+    height: 30px;
+    background-color: rgba(0,0,0,0.7);
+    color: rgba(255,255,255,0.8);
+  }
+  .tou .right a{
+    color: rgba(255,255,255,0.8);
+  }
+  .bloginfo ul{
+    margin-left: 100px;
+  }
+  .bloginfo ul li{
+    display: inline-block;
+    margin-left: 10px;
+  }
+  .t01{
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+  }
+  .tou .left h4{
+    float: left;
+    line-height: 15px;
+    font-size: 14px;
+    margin-left: 10%;
+  }
+  .tou .right h4{
+    float: right;
+    line-height: 15px;
+    font-size: 10px;
+    margin-right: 5%;
+  }
+</style>
+<!--[if lt IE 9]>
+<script src="js/modernizr.js"></script>
+<![endif]-->
+</head>
+<body>
+<header>
+  {include file="../application/admin/view/Common/a.html" /}
+  <block name="title"></block>
+  <script>
+window.onload = function ()
+{
+var obj=null;
+var As=document.getElementById('nav').getElementsByTagName('a');
+obj = As[0];
+for(i=1;i<As.length;i++){if(window.location.href.indexOf(As[i].href)>=0)
+  obj=As[i];}
+  obj.id='selected';
+}
+var mydate = new Date();
+var t=mydate.toLocaleString();
+$('#time').html(t);
+</script> 
+</header>
+<div class="mnav">
+    <ul>
+      <li><a href="index.html">首页</a></li>
+      <li><a href="share.html">个人中心</a></li>
+      <li><a href="list.html">随便看看</a></li>
+      <li><a href="about.html">关于我</a></li>
+    </ul>
+  </div>
+<article>
+  <div class="l_box">
+    <div class="search">
+      <form action="{:url('search')}" method="post" name="searchform" id="searchform">
+        <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字词" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字词'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字词'}" type="text">
+        <input name="show" value="title" type="hidden">
+        <input name="tempid" value="1" type="hidden">
+        <input name="tbname" value="news" type="hidden">
+        <input name="Submit" class="input_submit" value="搜索" type="submit">
+      </form>
+    </div>
+    <div class="tuijian">
+      <h2>站长推荐</h2>
+      <ul>
+        {foreach $tuijian as $k=>$v}
+            <li><a href="{:url('showonce')}?a_id={$v.a_id}">{$v.a_title}</a></li>
+        {/foreach}
+      </ul>
+    </div>
+     <div class="tuijian">
+      <h2>点击排行</h2>
+      <ul>
+        {foreach $click as $k=>$v}
+            <li><a href="{:url('showonce')}?a_id={$v.a_id}">{$v.a_title}</a></li>
+        {/foreach}
+      </ul>
+    </div>
+<div class="cloud">
+      <h2>标签云</h2>
+      <ul>
+        <a href="/">陌上花开</a> <a href="/">校园生活</a> <a href="/">html5</a> <a href="/">SumSung</a> <a href="/">青春</a> <a href="/">温暖</a> <a href="/">阳光</a> <a href="/">三星</a><a href="/">索尼</a> <a href="/">华维荣耀</a> <a href="/">三星</a> <a href="/">索尼</a>
+      </ul>
+    </div>
+  </div>
+  <div class="infosbox">
+    <div class="newsview">
+      <h3 class="news_title" style="text-align: center;">{$info.a_title}</h3>
+      <input type="hidden" name="a_id" id="a_id" value="{$info.a_id}">
+      <input type="hidden" name="user_id" id="user_id" value="{$info.a_user_id}">
+      <div class="bloginfo">
+        <ul style="display:inline;white-space: nowrap;">
+          <li class="author">作者：<a href="{:url('own/anyone')}?id={$info.a_user_id}">{$userinfo.user_nickname}</a></li>
+          <li class="timer">发布时间：{$info.a_updatetime|date='Y-m-d H:i:s'}</li>
+          <li class="view">{$info.a_clickcount}人已阅读</li>
+        </ul>
+      </div>
+      <div class="tags" style="margin:10px 50px;">
+        <p style="margin: 10px 50px;">{$info.a_content}</p>
+      </div>
+    <div class="share">
+      <p class="diggit">
+        {if !isset($like)}
+        <button class="btn btn-default" id="like">赞({$info.a_like})</button>
+        {else /}
+        <button class="btn btn-default" id="like">取消赞({$info.a_like})</button>
+        {/if}
+        {if !isset($dislike)}
+        <button class="btn btn-default" id="dislike">踩({$info.a_dislike})</button>
+        {else /}
+        <button class="btn btn-default" id="dislike">取消踩({$info.a_dislike})</button>
+        {/if}
+        {if !isset($shou)}
+        <button class="btn btn-default" id="collect">收藏({$info.a_collect})</button>
+        {else /}
+        <button class="btn btn-default" id="collect">已收藏({$info.a_collect})</button>
+        {/if}
+        {if !isset($guanzhu)}
+        <button class="btn btn-default" id="attention">关注</button>
+        {else /}
+        <button class="btn btn-default" id="attention">已关注</button>
+        {/if}
+      </p>
+    </div>
+    <div class="news_pl" style="width: 550px;margin: 0 350px;">
+      <h2>文章评论</h2>
+      <div class="t02"></div>
+      <button type="button" class="btn btn-link" id="loading" style="margin-top: 10px;" value="0">点击此处，加载评论</button>
+      <textarea name="a_content" id="content" class="common-textarea" cols="30" style="width: 100%;" rows="5"></textarea>
+      <div >
+        {if empty($bg_userinfo)}
+        <a class="btn btn-default" href="{:url('login')}" role="button">登录</a>
+        {else /}
+        <button class="sub_btn">发表评论</button>
+        {/if}
+      </div>
+    </div>
+  </div>
+</article>
+<script type="text/javascript" charset="utf-8" src="__STATIC__/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__STATIC__/ueditor.all.min.js"> </script>
+<script>
+var ue = UE.getEditor('content');
+</script>
+<!-- <script type="text/javascript">
+  $(document).on('click','#like',function(){
+    var a_id=$('#a_id').val();
+    var dislike=$('#dislike').text();
+    var dis=dislike.substring(0,3);
+    if(dis=="取消踩"){
+      alert("请先取消踩");return;
+    }
+    $.ajax({
+      url:"{:url('changelike')}",
+      dataType:"json",
+      type:"POST",
+      data:{a_id:a_id},
+      success:function(res){
+        if(res.errcode==0){
+          alert("您还未登录");return ;
+        }else if(res.errcode==2){
+          $('.diggit').html('<button class="btn btn-default" id="like">赞('+res.data.a_like+')</button><button class="btn btn-default" id="dislike">踩('+res.data.a_dislike+')</button>');
+        }else if(res.errcode==3){
+          $('.diggit').html('<button class="btn btn-default" id="like">赞('+res.data.a_like+')</button><button class="btn btn-default" id="dislike">踩('+res.data.a_dislike+')</button>');
+        }else if(res.errcode==4){
+          $('.diggit').html('<button class="btn btn-default" id="like">取消赞('+res.data.a_like+')</button><button class="btn btn-default" id="dislike">踩('+res.data.a_dislike+')</button>');          
+        }else if(res.errcode==5){
+          $('.diggit').html('<button class="btn btn-default" id="like">取消赞('+res.data.a_like+')</button><button class="btn btn-default" id="dislike">踩('+res.data.a_dislike+')</button>');          
+        }
+      }
+    })
+  })
+  $(document).on('click','#dislike',function(){
+    var a_id=$('#a_id').val();
+    var like=$('#like').text();
+    var lik=dislike.substring(0,3);
+    if(lik=="取消踩"){
+      alert("请先取消踩");return;
+    }
+    $.ajax({
+      url:"{:url('changedislike')}",
+      dataType:"json",
+      type:"POST",
+      data:{a_id:a_id},
+      success:function(res){
+        var d=res.data;
+        if(res.errcode==0){
+          alert("您还未登录");return ;
+        }else if(res.errcode==2){
+          $('.diggit').html('<button class="btn btn-default" id="like">赞('+d.a_like+')</button><button class="btn btn-default" id="dislike">踩('+d.a_dislike+')</button>');
+        }else if(res.errcode==3){
+          $('.diggit').html('<button class="btn btn-default" id="like">赞('+d.a_like+')</button><button class="btn btn-default" id="dislike">踩('+d.a_dislike+')</button>');
+        }else if(res.errcode==4){
+          $('.diggit').html('<button class="btn btn-default" id="like">赞('+d.a_like+')</button><button class="btn btn-default" id="dislike">取消踩('+d.a_dislike+')</button>');          
+        }else if(res.errcode==5){
+          $('.diggit').html('<button class="btn btn-default" id="like">赞('+d.a_like+')</button><button class="btn btn-default" id="dislike">取消踩('+d.a_dislike+')</button>');          
+        }
+      }
+    })
+  })//点赞、取消赞、点踩、取消踩
+</script> -->
+<script type="text/javascript">
+  $(document).on('click','#like',function(){
+    var a_id=$('#a_id').val();
+    var user_id=$('#user_id').val();
+    var dislike=$('#dislike').text();
+    var dis=dislike.substring(0,3);
+    if(dis=="取消踩"){
+      alert("您已经点过踩");return;
+    }
+    var like=$('#like').text();
+    var lik=like.substring(0,3);
+    if(lik=="取消赞"){
+      alert("您已经点过赞");exit();
+    }
+    $.ajax({
+      url:"{:url('changelike')}",
+      dataType:"json",
+      type:"POST",
+      data:{a_id:a_id,user_id:user_id},
+      success:function(res){
+        if(res.errcode==0){
+          alert("您还未登录");return ;
+        }else if(res.errcode==1){
+          alert("您不能自己赞自己");return;
+        }else if(res.errcode==4){
+          $('.diggit').html('<button class="btn btn-default" id="like">取消赞('+res.data.a_like+')</button><button class="btn btn-default" id="dislike">踩('+res.data.a_dislike+')</button><button class="btn btn-default" id="collect">收藏('+res.data.a_collect+')</button>');          
+        }else if(res.errcode==5){
+          $('.diggit').html('<button class="btn btn-default" id="like">取消赞('+res.data.a_like+')</button><button class="btn btn-default" id="dislike">踩('+res.data.a_dislike+')</button><button class="btn btn-default" id="collect">收藏('+res.data.a_collect+')</button>');          
+        }
+      }
+    })
+  })
+  $(document).on('click','#collect',function(){
+    var a_id=$('#a_id').val();
+    var user_id=$('#user_id').val();
+    var collect=$('#collect').text();
+    var col=collect.substring(0,3);
+    if(col=="已收藏"){
+      alert("您已经收藏过该文");return;
+    }
+    $.ajax({
+      url:"{:url('changecollect')}",
+      dataType:"json",
+      type:"POST",
+      data:{a_id:a_id,user_id:user_id},
+      success:function(res){
+        var d=res.data;
+        if(res.errcode==0){
+          alert("您还未登录");return ;
+        }else if(res.errcode==1){
+          alert("您不能自己收藏自己的文章");return;
+        }else if(res.errcode==4){
+          $('#collect').text('已收藏('+d.a_collect+')');  
+        }else if(res.errcode==5){
+          $('#collect').text('已收藏('+d.a_collect+')');          
+        }
+      }
+    })
+  })
+  $(document).on('click','#attention',function(){
+    var user_id=$('#user_id').val();
+    var attention=$('#attention').text();
+    var col=attention.substring(0,3);
+    if(col=="已关注"){
+      alert("您已经关注过该用户了");return;
+    }
+    $.ajax({
+      url:"{:url('addattention')}",
+      dataType:"json",
+      type:"POST",
+      data:{user_id:user_id},
+      success:function(res){
+        var d=res.data;
+        if(res.errcode==0){
+          alert("您还未登录");return ;
+        }else if(res.errcode==1){
+          alert("您不能自己关注自己");return;
+        }else if(res.errcode==4){
+          $('#attention').text('已关注');  
+        }
+      }
+    })
+  })
+  $(document).on('click','#dislike',function(){
+    var a_id=$('#a_id').val();
+    var user_id=$('#user_id').val();
+    var like=$('#like').text();
+    var lik=like.substring(0,3);
+    if(lik=="取消赞"){
+      alert("您已经点过赞");exit();
+    }
+    var dislike=$('#dislike').text();
+    var dis=dislike.substring(0,3);
+    if(dis=="取消踩"){
+      alert("您已经点过踩");return;
+    }
+    $.ajax({
+      url:"{:url('changedislike')}",
+      dataType:"json",
+      type:"POST",
+      data:{a_id:a_id,user_id:user_id},
+      success:function(res){
+        var d=res.data;
+        if(res.errcode==0){
+          alert("您还未登录");return ;
+        }else if(res.errcode==1){
+          alert("您不能自己踩自己");return;
+        }else if(res.errcode==4){
+          $('.diggit').html('<button class="btn btn-default" id="like">赞('+d.a_like+')</button><button class="btn btn-default" id="dislike">取消踩('+d.a_dislike+')</button><button class="btn btn-default" id="collect">收藏('+d.a_collect+')</button>');          
+        }else if(res.errcode==5){
+          $('.diggit').html('<button class="btn btn-default" id="like">赞('+d.a_like+')</button><button class="btn btn-default" id="dislike">取消踩('+d.a_dislike+')</button><button class="btn btn-default" id="collect">收藏('+d.a_collect+')</button>');          
+        }
+      }
+    })
+  })
+  $(document).on('click','#loading',function(){
+    var a_id=$('#a_id').val();
+    var load=$(this).val();
+    $.ajax({
+      url:"{:url('loadcomment')}",
+      dataType:"json",
+      type:"POST",
+      data:{a_id:a_id,load:load},
+      success:function(res){
+        var t='';
+        if(res.errcode==0){
+          t="暂无评论";
+          $('.t02').html(t);
+        }else{
+          $.each(res.data,function(k,v){
+            t+='<div style="border-bottom:1px solid #ccc;">';
+            t+='<a href="../own/showinfo?id='+v.id+'" style="margin-right:30px;">'+v.user_nickname+'</a>';
+            t+=v.comment_addtime+'<br>';
+            t+='<p style="padding-bottom:10px;margin:20px 40px;">'+v.comment_text+'</p>';
+            t+='</div>';
+          })
+          $('#loading').val(res.load);
+          $('.t02').append(t);
+        }
+        
+      }
+    })
+  })
+  $(document).on('click','.sub_btn',function(){
+    var content=UE.getEditor('content').getContent();
+    var a_id=$('#a_id').val();
+    var title=$('.news_title').text();
+    $.ajax({
+      url:"{:url('comment/addcomment')}",
+      dataType:"json",
+      type:"post",
+      data:{comment_text:content,article_id:a_id,article_title:title},
+      success:function(res){
+        if(res.errcode==1){
+          alert('评论发表成功，待审核');
+        }else{
+          alert('评论发表失败');
+        }
+      }
+    })
+  })
+</script>
+</body>
+</html>
+

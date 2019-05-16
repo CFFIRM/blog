@@ -61,19 +61,32 @@
                                                 </select>
                                             </div>
                                             <div id="t01">
+                                                <table style="width: 1200px;height: 300px;">
+                                                    <tr>
+                                                        <th>菜单</th>
+                                                        <th>权限</th>
+                                                    </tr>
                                                 {foreach $powerinfo as $k=>$v}
                                                     <div  f_id="{$v.power_id}" style=" margin:30px 0;width: 1400px;font-size:16px">
+                                                            <tr>
                                                             {if $v.level==1}
+                                                            <td>
+                                                            <input type="checkbox" name="{$v.power_id}" class="checkss" value="{$v.power_id}">
                                                                 <label for="normal-input" class="form-control-label">{$v.power_name}:</label>
-                                                                <input type="hidden" id="f_id" value="{$v.power_id}">
+                                                            </td>
                                                             {/if}
+                                                            <td>
                                                             {foreach $powerinfo as $key=>$value}
+                                                            
                                                                 {if $v.power_id==$value.f_id}
                                                                 &emsp;<input type="checkbox" name="{$value.power_id}" f_id="{$v.power_id}" class="check" value="{$value.power_id}">{$value.power_name}
                                                                 {/if}
                                                             {/foreach}
+                                                            </td>
+                                                            </tr>
                                                     </div>
                                                 {/foreach}
+                                                </table>
                                             </div>
                                             <div class="form-group">
                                                 <button type="button" class="btn btn-primary" id="btn">
@@ -117,15 +130,20 @@
         $(document).on('click','#btn',function(){
             var ids=[];
             var role_id=$('#role_id').val();
+            var f_id=[];
+            $('.checkss:checked').each(function(){
+                f_id.push($(this).val());    
+            });
             $('.check:checked').each(function(){
                 ids.push($(this).val());
-                ids.push($(this).attr('f_id'));    
             });
+
+            var f_ids=f_id.toString();
             var ids=ids.toString();
-            console.log(ids);
+            last=ids+','+f_ids;
             $.ajax({
                 url:"poweradd",
-                data:{ids:ids,role_id:role_id},
+                data:{ids:last,role_id:role_id},
                 dataType:"json",
                 type:"post",
                 success:function(res){

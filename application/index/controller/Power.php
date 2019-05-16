@@ -65,7 +65,7 @@ class Power extends Common
     }
     public function poweradd(){
         if(request()->ispost()){
-            $data=input('post.');   
+            $data=input('post.');
             $res=$this->Code($data);
             $Power = new RolePower;
             $list = RolePower::where('role_id',$data['role_id'])->delete();

@@ -126,31 +126,59 @@
   <div class="title">博客登录</div>
 </div>
   
-<form action="{:url('login')}" method="POST">
+<form action="{:url('register')}" method="POST">
   <div class="wrap" id="wrap">
     <div class="logGet">
         <!-- 头部提示信息 -->
         <div class="logD logDtip">
-          <p class="p1">登录</p>
+          <p class="p1">注册</p>
         </div>
         <!-- 输入框 -->
         <div class="lgD">
           <input type="text"
-            placeholder="输入用户名" name="user_name" />
+            placeholder="请输入您的登录名称,此项用于登录账号来使用" name="user_name" required="" onblur=""/>
+        </div>
+        <div class="lgD">
+          <input type="text"
+            placeholder="请输入您的昵称" name="user_nickname" required="" onblur=""/>
         </div>
         <div class="lgD">
           <input type="password"
-            placeholder="输入用户密码" name="user_pwd" />
+            placeholder="请设置您的密码" id="user_pwd" name="user_pwd" required="" pattern="\w{6,12}" />
+            <text id="t01" style="color: red"></text>
+        </div>
+        <div class="lgD">
+          <input type="password"
+            placeholder="请再次输入密码" id="again_pwd" name="again_pwd" onblur="fun1()" pattern="\w{6,12}" required=""/><text id="t02" style="color: red"></text>
+        </div>
+
+        <div class="lgD">
+          <input type="email"
+            placeholder="请输入您的邮箱" name="user_email" required=""/>
+        </div>
+        <div class="lgD">
+          <input type="text"
+            placeholder="请输入您的手机号" name="user_tel" pattern="(1[3578]\d{9})" required=""/>
         </div>
         <div class="logC">
-          <input type="submit" class="button" value="Login" name="">
+          <input type="submit" class="button" value="Submit" name="">
         </div>
         <div class="logR">
-          <a href="{:url('findpwd')}" class="a01">找回密码</a>
-          <a href="{:url('register')}" class="a02">注册</a>
+          <a href="{:url('index')}" class="a01">登录</a>
         </div>
       </div>
   </div>
 </form>
+<script src="__STATIC__/vendor/jquery/jquery.min.js"></script>
+<script type="text/javascript">
+
+  function fun1(){
+    var pwd=$('#user_pwd').val();
+    var again=$('#again_pwd').val();
+    if(pwd!=again){
+      $('#t02').html("两次密码输入不一致");
+    }
+  }
+</script>
 </body>
 </html>

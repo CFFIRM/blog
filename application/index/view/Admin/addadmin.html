@@ -54,25 +54,36 @@
                                 Basic Forms
                             </div>
                             <div class="card-body">
-                                <form action="{:url('addadmin')}" method="post">
+                                <form action="{:url('addadmin')}" method="post" onsubmit="fun1()">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="normal-input" class="form-control-label">管理员名称</label>
-                                                <input id="normal-input" class="form-control" name="adming_login_name" placeholder="请输入管理员名称">
+                                                <input class="form-control" name="admin_login_name" id="admin_login_name" placeholder="请输入管理员名称" required="">
+                                                <span id="t01"></span>
                                             </div>
                                             <div class="form-group">
                                                 <label for="normal-input" class="form-control-label">管理员密码</label>
-                                                <input type="pwssword" id="admin_login_pwd" class="form-control" name="admin_login_pwd" onblur="fun1()" placeholder="密码应为6~30位，有大写小写字母以及特殊字符">
+                                                <input type="password" id="admin_login_pwd" class="form-control" name="admin_login_pwd" pattern="[\w]{6,30}" required="" placeholder="密码应为6~30位，有大写小写字母以及特殊字符">
                                                 <p id="s01"></p>
                                             </div>
                                             <div class="form-group">
                                                 <label for="normal-input" class="form-control-label">确认密码</label>
-                                                <input type="password" id="normal-input" class="form-control" name="a_title" placeholder="请再次输入密码">
+                                                <input type="password" id="normal-input" pattern="[\w]{6,30}" class="form-control" name="again_pwd" placeholder="请再次输入密码" required="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="normal-input" class="form-control-label">管理员手机</label>
+                                                <input class="form-control" id="admin_tel" name="admin_tel" placeholder="请输入您的手机号" required="">
+                                                <span id="t02"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="normal-input" class="form-control-label">管理员邮箱</label>
+                                                <input type="email" class="form-control" id="admin_email" name="admin_email" placeholder="请输入管理员邮箱" required="">
+                                                <span id="t03"></span>
                                             </div>
                                             <div class="form-group">
                                                 <label for="normal-input" class="form-control-label">管理员角色</label>
-                                                <select id="level">
+                                                <select id="level" name="role_id">
                                                     {foreach $data as $k=>$v}
                                                     <option value="{$v.role_id}">{$v.role_name}</option>
                                                     {/foreach}
@@ -108,14 +119,64 @@
 <script src="__STATIC__/js/carbon.js"></script>
 <script src="__STATIC__/js/demo.js"></script>
 <script type="text/javascript">
+    var blog=false;
+    $(document).on('blur','#admin_login_name',function(){
+        var name=$(this).val();
+        $.ajax({
+            url:"{:url('checkname')}",
+            dataType:"json",
+            type:"POST",
+            data:{name:name},
+            success:function(res){
+                if(res.errcode==0){
+                    $('#t01').html("可以使用");
+                    blog=true;
+                }else{
+                    $('#t01').html("已经被使用");
+                    blog=false;
+                }
+            }
+        })
+    })
+    $(document).on('blur','#admin_tel',function(){
+        var name=$(this).val();
+        $.ajax({
+            url:"{:url('checkname')}",
+            dataType:"json",
+            type:"POST",
+            data:{tel:name},
+            success:function(res){
+                if(res.errcode==0){
+                    $('#t02').html("可以使用");
+                    blog=true;
+                }else{
+                    $('#t02').html("已经被使用,一个手机号只能注册一个");
+                    blog=false;
+                }
+            }
+        })
+    })
+    $(document).on('blur','#admin_email',function(){
+        var name=$(this).val();
+        $.ajax({
+            url:"{:url('checkname')}",
+            dataType:"json",
+            type:"POST",
+            data:{email:name},
+            success:function(res){
+                if(res.errcode==0){
+                    $('#t03').html("可以使用");
+                    blog=true;
+                }else{
+                    $('#t03').html("该邮箱已经被使用");
+                    blog=false;
+                }
+            }
+        })
+    })
     function fun1(){
-        var pwd=$("#admin_login_pwd").val();
-        console.log(pwd);
-        var preg=/^[A-Za-z\w]{6,30}$/;
-        if(pwd == ""){
-            $("#s01").html("密码不能为空");
-        }else if(!preg.test(pwd)){
-            $("#s01").html("密码格式有误");
+        if(blog){
+            return true;
         }
     }
 </script>

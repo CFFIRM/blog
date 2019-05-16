@@ -9,24 +9,43 @@ class Comment extends Controller
     public function commentlist()
     {
     	$meun=new Index();$meun->after();
-        $info=C::paginate(10);
+        $info=C::where('comment_status',1)->paginate(10);
         // 获取分页显示
 		$page = $info->render();
 		// 模板变量赋值
 		$this->assign('info', $info);
 		$this->assign('page', $page);
-        return view();
+        return view('commentlist');
+    }
+    public function commentlist_shen()
+    {
+        $meun=new Index();$meun->after();
+        $info=C::where('comment_status',0)->paginate(10);
+        // 获取分页显示
+        $page = $info->render();
+        // 模板变量赋值
+        $this->assign('info', $info);
+        $this->assign('page', $page);
+        return view('commentlist');
+    }
+    public function commentlist_pass()
+    {
+        $meun=new Index();$meun->after();
+        $info=C::where('comment_status',2)->paginate(10);
+        // 获取分页显示
+        $page = $info->render();
+        // 模板变量赋值
+        $this->assign('info', $info);
+        $this->assign('page', $page);
+        return view('commentlist');
     }
     public function checkcomment(){
-    	$a_id=input('post.comment_id');
-        $user = C::where('comment_id',$a_id)->find();
-        if($user['comment_status']==0){
-            $user->comment_status     = 1;    
-        }else{
-            $user->comment_status     = 0;    
-        }
+        $comment_id=input('post.comment_id');
+    	$comment_status=input('post.comment_status');
+        $user = C::where('comment_id',$comment_id)->find();
+        $user->comment_status=$comment_status;
         $user->save();
-        $res = Wen::where('a_id',$a_id)->field('a_status')->find();
+        $res = C::where('comment_id',$comment_id)->field('comment_status')->find();
         echo json_encode($res);
     }
 }

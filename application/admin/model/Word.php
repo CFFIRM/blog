@@ -3,7 +3,7 @@ namespace app\admin\model;
 
 use think\Model;
 
-class Article extends Model
+class Word extends Model
 {
-	protected $pk = 'a_id';
+	
 }

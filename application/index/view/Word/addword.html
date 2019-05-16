@@ -11,8 +11,7 @@
 </head>
 <body class="sidebar-fixed header-fixed">
 <div class="page-wrapper">
-    
-<nav class="navbar page-header">
+    <nav class="navbar page-header">
             <a href="#" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
                 <i class="fa fa-bars"></i>
             </a>
@@ -41,6 +40,7 @@
                     <block name="head"></block>
             </ul>
         </nav>
+
     <div class="main-container">
         {include file="../application/index/view/Meun/meun.html" /}
         <block name="meun"></block>
@@ -54,15 +54,28 @@
                                 Basic Forms
                             </div>
                             <div class="card-body">
-                                <form action="{:url('compile')}" method="post">
+                                <form action="{:url('addword')}" method="post">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="normal-input" class="form-control-label">角色名称</label>
-                                                <input id="normal-input" class="form-control" name="role_name" value="{$data.role_name}" placeholder="请输入角色名称">
-                                                <input type="hidden" name="role_id" value="{$data.role_id}">
+                                                <label for="normal-input" class="form-control-label">敏感词名称</label>
+                                                <input id="normal-input" class="form-control" name="word_name" placeholder="请输入敏感词">
                                             </div>
                                             <div class="form-group">
+                                                <label for="normal-input" class="form-control-label">替换词</label>
+                                                <input type="text" id="normal-input" class="form-control" name="word_replace"  placeholder="请写入替换的词">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="normal-input" class="form-control-label">敏感词级别</label>
+                                                <select name="word_type" id="normal-input">
+                                                    <option value="0">一般敏感</option>
+                                                    <option value="1">比较敏感</option>
+                                                    <option value="2">特别敏感</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                            <div class="form-group" style="margin-left:15px">
                                                 <button type="submit" class="btn btn-primary">
                                                     <i class="fa fa-align-center"></i>提交
                                                 </button>
@@ -80,12 +93,26 @@
         </div>
     </div>
 </div>
-
+<script type="text/javascript" charset="utf-8" src="__STATIC__/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__STATIC__/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="__STATIC__/lang/zh-cn/zh-cn.js"></script>
 <script src="__STATIC__/vendor/jquery/jquery.min.js"></script>
 <script src="__STATIC__/vendor/popper.js/popper.min.js"></script>
 <script src="__STATIC__/vendor/bootstrap/js/bootstrap.min.js"></script>
 <script src="__STATIC__/vendor/chart.js/chart.min.js"></script>
 <script src="__STATIC__/js/carbon.js"></script>
 <script src="__STATIC__/js/demo.js"></script>
+<script type="text/javascript">
+    function fun1(){
+        var pwd=$("#admin_login_pwd").val();
+        console.log(pwd);
+        var preg=/^[A-Za-z\w]{6,30}$/;
+        if(pwd == ""){
+            $("#s01").html("密码不能为空");
+        }else if(!preg.test(pwd)){
+            $("#s01").html("密码格式有误");
+        }
+    }
+</script>
 </body>
 </html>

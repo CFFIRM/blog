@@ -54,17 +54,21 @@
                                 Basic Forms
                             </div>
                             <div class="card-body">
-                                <form action="{:url('updatelink')}" method="post">
+                                <form action="{:url('addlink')}" method="post">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="normal-input" class="form-control-label">链接说明</label>
-                                                <input id="normal-input" class="form-control" value="{$info.l_name}" name="l_name" placeholder="请输入链接的说明">
+                                                <label for="normal-input" class="form-control-label">广告说明</label>
+                                                <input id="normal-input" class="form-control" value="{$info.a_desc}" name="a_desc" placeholder="请输入链接的说明">
+                                                <input type="hidden" name="id" value="{$info.id}">
                                             </div>
                                             <div class="form-group">
                                                 <label for="normal-input" class="form-control-label">链接网址</label>
-                                                <input type="pwssword" id="l_src" class="form-control" value="{$info.l_src}" name="l_src"  placeholder="请写入链接地址">
-                                                <p id="s01"></p>
+                                                <input type="text" id="normal-input" class="form-control" value="{$info.a_src}" name="a_src"  placeholder="请写入链接地址">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="normal-input" class="form-control-label">广告图片</label>
+                                                <input type="file" id="normal-input" class="form-control" name="image" >
                                             </div>
                                         </div>
                                     </div>
@@ -96,7 +100,7 @@
 <script src="__STATIC__/js/carbon.js"></script>
 <script src="__STATIC__/js/demo.js"></script>
 <script type="text/javascript">
-    
+   
 </script>
 </body>
 </html>

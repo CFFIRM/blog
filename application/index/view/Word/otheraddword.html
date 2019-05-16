@@ -54,20 +54,22 @@
                                 Basic Forms
                             </div>
                             <div class="card-body">
-                                <form action="{:url('addlink')}" method="post">
+                                <form action="{:url('otheraddword')}" method="post">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="normal-input" class="form-control-label">广告说明</label>
-                                                <input id="normal-input" class="form-control" name="a_desc" placeholder="请输入链接的说明">
+                                                <label for="normal-input" class="form-control-label">敏感词名称</label>
+                                                <h6 style="position: absolute; top: 170px;left: 40%; width: 300px;">您可以输入<span>140</span>个字，现在剩余<span id="word">140</span>个</h6>
+                                                <textarea cols="50" rows="10" id="word_name" name="word_name" placeholder="如果要添加多个请换行继续输入"></textarea>
+                                                <span id="count"></span>
                                             </div>
                                             <div class="form-group">
-                                                <label for="normal-input" class="form-control-label">链接网址</label>
-                                                <input type="text" id="normal-input" class="form-control" name="a_src"  placeholder="请写入链接地址">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="normal-input" class="form-control-label">广告图片</label>
-                                                <input type="file" id="normal-input" class="form-control" name="image" >
+                                                <label for="normal-input" class="form-control-label">敏感词级别</label>
+                                                <select name="word_type" id="normal-input">
+                                                    <option value="0">一般敏感</option>
+                                                    <option value="1">比较敏感</option>
+                                                    <option value="2">特别敏感</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -99,7 +101,17 @@
 <script src="__STATIC__/js/carbon.js"></script>
 <script src="__STATIC__/js/demo.js"></script>
 <script type="text/javascript">
-   
+    window.onload=function(){
+        $("#word_name").keyup(function(){
+           var len = $(this).val().length;
+           if(len > 139){
+            $(this).val($(this).val().substring(0,140));
+           }
+           var num = 140 - len;
+           $("#word").text(num);
+        });
+    }
+        
 </script>
 </body>
 </html>

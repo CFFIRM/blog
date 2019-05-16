@@ -5,16 +5,40 @@ use think\Db;
 use app\index\model\Article as Wen;
 use app\index\model\Cat;
 use app\index\model\User;
+use think\facade\Session;
+use app\index\model\Message;
 use app\index\controller\Index;
 use app\index\controller\Common;
 use think\facade\Request;
 class Article extends Common
 {
-	public function article_list(){
+	public function article_list(){//通过
         $meun=new Index();$meun->after();
-        $res=Wen::paginate(5);
-        return view('article_list',['page'=>$res]);    
+        $list=Wen::where('a_status',1)->paginate(10);
+        $page = $list->render();
+        // 模板变量赋值
+        $this->assign('info', $list);
+        $this->assign('page', $page);
+        return view('article_list');    
 	}
+    public function article_list_shen(){//审核中
+        $meun=new Index();$meun->after();
+        $list=Wen::where('a_status',0)->paginate(10);
+        $page = $list->render();
+        // 模板变量赋值
+        $this->assign('info', $list);
+        $this->assign('page', $page);
+        return view('article_list');    
+    }
+    public function article_list_pass(){//未通过
+        $meun=new Index();$meun->after();
+        $list=Wen::where('a_status',2)->paginate(10);
+        $page = $list->render();
+        // 模板变量赋值
+        $this->assign('info', $list);
+        $this->assign('page', $page);
+        return view('article_list');    
+    }
 	public function addarticle(){
         if(request()->ispost()){
         	$data=input('post.');
@@ -35,7 +59,7 @@ class Article extends Common
         
 	}
 	public function deletearticle(){
-		$a_id=input('get.id');
+		$a_id=input('get.a_id');
     	$res=Wen::where('a_id',$a_id)->delete();
     	if($res){
     		$this->success('删除成功');
@@ -60,35 +84,51 @@ class Article extends Common
                 $this->error('发生了未知的错误');
             }
         }else{
-            $a_id=input('get.id');
+            $a_id=input('get.a_id');
             $meun=new Index();$meun->after();
             $res=Wen::where('a_id',$a_id)->find()->toArray();
             $this->assign('info',$res);
             return view();
         }
     }
-    public function ajax(){
-        $a_fid=$this->request->param('a_fid');
-            $res=Wen::where('a_fid',$a_fid)->select()->toArray();
-            $newarr=[];
-            foreach($res as $k=>$v){
-                if($v['a_content']==""){
-                    $newarr[]=$v['a_title'];
-                }
-            }
-            echo json_encode($newarr);
-    }
     public function change(){
+        $userinfo=json_decode(Session::get('userinfo'),true);
         $a_id=input('post.a_id');
+        $text=input('post.message');
+        $user_id=input('post.user_id');
+        $a_status=input('post.a_status');
         $user = Wen::where('a_id',$a_id)->find();
-        if($user['a_status']==0){
-            $user->a_status     = 1;    
+        if($a_status==1){
+            $user->a_status     = 1;
+            $user->a_shentime   = time();
+            $user->admin_id    =$userinfo['admin_id'];
         }else{
-            $user->a_status     = 0;    
+            $user->a_status     = 2;
+            $user->a_shentime   =time();
+            $user->admin_id    =$userinfo['admin_id'];
         }
-        $user->save();
-        $res = Wen::where('a_id',$a_id)->field('a_status')->find();
-        echo json_encode($res);
+        $result=$user->save();
+        $msg=new Message;
+        $msg->save([
+            'content'=>$text,
+            'user_id'=>$user_id,
+            'admin_id'=>$userinfo['admin_id'],
+            'addtime'=>time()
+        ]);
+        if($result){
+            $res = Wen::where('a_id',$a_id)->field('a_status')->find();
+            if(request()->ispost()){
+                if($res){
+                    $this->success("审核成功",'article_list');
+                }else{
+                    $this->error("审核失败");
+                }
+            }else{
+                echo json_encode($res);
+            }    
+        }else{
+            $this->error("更改状态失败");
+        }
     }
     public function showinfo(){
         $meun=new Index();$meun->after();

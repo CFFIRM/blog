@@ -8,6 +8,12 @@
     <link rel="stylesheet" href="__STATIC__/vendor/simple-line-icons/css/simple-line-icons.css">
     <link rel="stylesheet" href="__STATIC__/vendor/font-awesome/css/fontawesome-all.min.css">
     <link rel="stylesheet" href="__STATIC__/css/styles.css">
+    <style type="text/css">
+        ul li{
+            list-style: none;
+            display: inline;
+        }
+    </style>
 </head>
 <body class="sidebar-fixed header-fixed">
 <div class="page-wrapper">
@@ -45,28 +51,22 @@
     <div class="main-container">
         {include file="../application/index/view/Meun/meun.html" /}
         <block name="meun"></block>
-        <form>
-            <select name="a_status" id="a_status">
-                <option value="0">审核中</option>
-                <option value="1">通过</option>
-            </select>
-        </form>
-        <div class="content" style="margin-left: 100px">
+        
+        <div class="content" style="margin-left: 150px">
             <div class="row">
                 <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table">
-                                    {if $info==""}
+                                    {if !isset($info[0])}
                                         <tr>
                                             <h1 style="text-align: center;">暂无数据</h1>
                                         </tr>
-                                        {else /}
+                                    {else /}
                                     <thead>
                                     <tr>
                                         <th></th>
                                         <th>ID</th>
                                         <th>文章标题</th>
-                                        <th>文章内容</th>
                                         <th>修改时间</th>
                                         <th>点赞数</th>
                                         <th>点踩数</th>
@@ -75,22 +75,17 @@
                                     </tr>
                                     </thead>
                                     <tbody class="t01">
-                                        {foreach $page as $k=>$v}
+                                        {foreach $info as $k=>$v}
                                             <tr id="{$v.a_id}">
                                                 <td><input type="checkbox" class="check" value="{$v.a_id}"></td>
                                                 <td>{$v.a_id}</td>
                                                 <td class="text-nowrap"><a href="{:url('showinfo')}?a_id={$v.a_id}">{$v.a_title}</a></td>
-                                                <td><a href="{:url('showinfo')}?a_id={$v.a_id}">{$v.a_content}</a></td>
                                                 <td>{$v.a_updatetime|date='Y-m-d H:i:s'}</td>
                                                 <td>{$v.a_like}</td>
                                                 <td>{$v.a_dislike}</td>
                                                 <td>{$v.a_collect}</td>
                                                 <td id="t02">
-                                                    {if $v.a_status==0}
-                                                    <button id="checks" value="0">审核中</button>
-                                                    {else/}
-                                                    <button id="checks" value="1">通过</button>
-                                                    {/if}
+                                                    <a href="{:url('showinfo')}?a_id={$v.a_id}">查看全文</a>
                                                 </td>
                                             </tr>
                                     {/foreach}
@@ -100,7 +95,7 @@
                             </div>
                         </div>
         </div>
-<div class="t02">
+<div class="t02" >
     {$page|raw}
 </div>
     </div>
@@ -142,7 +137,7 @@
                     }
                 })
             })
-            $(document).on('click','#checks',function(){
+            /*$(document).on('click','#checks',function(){
                 a_id=$(this).parents('tr').attr('id');
                 $.ajax({
                     url:"change",
@@ -158,7 +153,7 @@
                         
                     }
                 })
-            })
+            })*/
         }
     </script>
 </body>

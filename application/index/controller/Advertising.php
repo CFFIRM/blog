@@ -16,18 +16,18 @@ class Advertising extends Controller
 		$this->assign('page', $page);
         return view('showinfo');
     }
-    public function deletelink(){
+    public function deleteadvert(){
 		$id=input('get.id');
 		$is_delete['is_delete']=1;
 		$l=new A;
-        $res=$l->save($is_delete,$id);
+        $res=$l->save($is_delete,['id'=>$id]);
         if($res){
             $this->success("删除成功",'showinfo');
         }else{
             $this->error('发生了未知的错误');
         }
     }
-    public function updatelink(){
+    public function updateadvert(){
     	if(request()->ispost()){
             $id=input('post.id');
             $data['a_src']=input('post.a_src'); 
@@ -47,11 +47,11 @@ class Advertising extends Controller
             return view();    
         }
     }
-    public function addlink(){
+    public function addadvert(){
     	if(request()->ispost()){
             $data=input('post.');
             $data['a_addtime']=time();
-            $data['a_src']=empty($this->upload())?"":$this->upload();
+            $data['a_img']=$this->upload();
             $l=new A;
             $res=$l->save($data);
             if($res){
@@ -68,14 +68,15 @@ class Advertising extends Controller
 	    // 获取表单上传文件 例如上传了001.jpg
 	    $file = request()->file('image');
 	    // 移动到框架应用根目录/uploads/ 目录下
-	    $info = $file->move( '/public/uploads');
+	    $info = $file->move( 'static/uploads/');
+        $data="";
 	    if($info){
 	        // 成功上传后 获取上传信息
 	        // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
-	        $data=$info->getSaveName();
+	         $data=$info->getSaveName();
 	    }else{
 	        // 上传失败获取错误信息
-	        echo $file->getError();
+	        
 	    }
 	    return $data;
 	}

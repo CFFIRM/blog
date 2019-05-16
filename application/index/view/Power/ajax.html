@@ -1,16 +1,20 @@
 {foreach $powerinfo as $k=>$v}
 <div class="form-group" f_id="{$v.power_id}" style=" margin:30px 0;width: 1400px;font-size:16px">
         {if $v.level==1}
-            <label for="normal-input" class="form-control-label">{$v.power_name}:</label>
+            {in name="$v.power_id" value="$check"}
+            <input type="checkbox" name="{$v.power_id}" checked="checked" class="checkss" value="{$v.power_id}"><label for="normal-input" class="form-control-label">{$v.power_name}:</label>
+            {else/}
+            <input type="checkbox" id="f_id" class="checkss" value="{$v.power_id}"><label for="normal-input" class="form-control-label">{$v.power_name}:</label>
+            {/in}
         {/if}
         {foreach $powerinfo as $key=>$value}
         	{in name="$value.power_id" value="$check"}
             	{if $v.power_id==$value.f_id}	
-            		&nbsp;<input type="checkbox" name="{$value.power_id}" class="check" f_id="{$v.power_id}" value="{$value.power_id}" checked="checked">{$value.power_name}
+            		&nbsp;<input type="checkbox" name="{$value.power_id}" class="check"  value="{$value.power_id}" checked="checked">{$value.power_name}
             	{/if}
             	{else/}
             		{if $v.power_id==$value.f_id}	
-            			&nbsp;<input type="checkbox" name="{$value.power_id}" class="check" f_id="{$v.power_id}" value="{$value.power_id}" >{$value.power_name}
+            			&nbsp;<input type="checkbox" name="{$value.power_id}" class="check" value="{$value.power_id}" >{$value.power_name}
             		{/if}
             	{/in}
             

@@ -3,7 +3,6 @@ namespace app\admin\model;
 
 use think\Model;
 
-class Article extends Model
+class Like extends Model
 {
-	protected $pk = 'a_id';
 }

@@ -20,7 +20,7 @@ class Link extends Controller
 		$l_id=input('get.l_id');
 		$is_delete['is_delete']=1;
 		$l=new L;
-        $res=$l->save($is_delete,$l_id);
+        $res=$l->save($is_delete,['l_id'=>$l_id]);
         if($res){
             $this->success("删除成功",'showinfo');
         }else{
@@ -30,9 +30,10 @@ class Link extends Controller
     public function updatelink(){
     	if(request()->ispost()){
             $l_id=input('post.l_id');
-            $l_src=input('post.l_src'); 
+            $data['l_name']=input('post.l_name');
+            $data['l_src']=input('post.l_src'); 
             $l=new L;
-            $res=$l->save($l_src,$l_id);
+            $res=$l->save($data,['l_id'=>$l_id]);
             if($res){
                 $this->success("修改成功",'showinfo');
             }else{
@@ -41,7 +42,7 @@ class Link extends Controller
         }else{
         	$l_id=input('get.l_id');
             $meun=new Index();$meun->after();
-            $info=L::where('l_id',$l_id)->find()->toArray();
+            $info=L::where('l_id',$l_id)->find();
             $this->assign('info',$info);
             return view();    
         }
