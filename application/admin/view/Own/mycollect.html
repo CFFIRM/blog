@@ -13,7 +13,27 @@
 <link href="__STATIC__/css/index.css" rel="stylesheet">
 <link href="__STATIC__/css/m.css" rel="stylesheet">
 <script src="__STATIC__/vendor/jquery/jquery.min.js"></script>
-
+<script type="text/javascript">
+  $(document).on('click','#delete',function(){
+    that=$(this).parents('li');
+    if(confirm("确认删除么?删除后将无法恢复")){
+      var a_id=$(this).parents('li').val();
+      $.ajax({
+        url:"{:url('deletecollect')}",
+        dataType:"json",
+        type:"POST",
+        data:{id:a_id},
+        success:function(res){
+          if(res.errcode==1){
+            that.remove();
+          }
+        }
+      })
+    }else{
+      return false;
+    }
+  })
+</script>
 <style type="text/css">
   .tou{
     width: 100%;
@@ -103,7 +123,7 @@ $('#time').html(t);
         </li>
       {else /}
       {foreach $list as $k=>$v}
-      <li>
+      <li style="position: relative;" value="{$v.id}">
         <h3><a href="{:url('index/showonce')}?a_id={$v.a_id}">{$v.a_title}</a></h3>
         <p>{$v.a_content|raw}</p>
         <div style="margin-top: 10px;">

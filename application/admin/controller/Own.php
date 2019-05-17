@@ -11,6 +11,7 @@ use app\admin\model\Comment;
 use app\admin\model\Word;
 use app\admin\model\User;
 use app\admin\model\Attention;
+use app\admin\model\Message;
 use think\facade\Cookie;
 
 
@@ -179,11 +180,105 @@ class Own extends Controller
     public function anyone(){
         $meun=new Index();$meun->index();
         $id=input('get.id');
-        $userinfo=Article::where('a_user_id',$id)->join('user u','Article.a_user_id=u.id')->field('id,user_nickname,a_id,a_title,a_content,a_updatetime,a_like,a_dislike,a_collect')->paginate(10);
-        $page = $userinfo->render();
+        $page=input('get.page');
+        if(empty($page)){
+            Cookie::set('user_id',$id);
+            $userinfo=Article::where('a_user_id',$id)->join('user u','Article.a_user_id=u.id')->field('id,user_nickname,a_id,a_title,a_content,a_updatetime,a_like,a_dislike,a_collect')->paginate(10);
+            $userdeinfo=Article::where('a_user_id',$id)->join('user u','Article.a_user_id=u.id')->field('id,user_nickname')->find()->toArray();
+            $page = $userinfo->render();
+            // 模板变量赋值
+            $this->assign('list', $userinfo);
+            $this->assign('info', $userdeinfo);
+            $this->assign('page', $page);
+            return view();
+        }else{
+            $user_id=Cookie::get('user_id');
+            $userinfo=Article::where('a_user_id',$user_id)->join('user u','Article.a_user_id=u.id')->field('id,user_nickname,a_id,a_title,a_content,a_updatetime,a_like,a_dislike,a_collect')->paginate(10);
+            $userdeinfo=Article::where('a_user_id',$user_id)->join('user u','Article.a_user_id=u.id')->field('id,user_nickname')->find();
+            $page = $userinfo->render();
+            // 模板变量赋值
+            $this->assign('list', $userinfo);
+            $this->assign('info', $userdeinfo);
+            $this->assign('page', $page);
+            return view();
+        }
+        
+    }
+    public function myattention(){
+        $meun=new Index();$meun->index();
+        $bg_userinfo=json_decode(Session::get('bg_userinfo'),true);
+        $list = Attention::where('user_id',$bg_userinfo['id'])->join('user u','Attention.attention_user_id=u.id')->field('Attention.id,Attention.addtime,user.user_nickname,user.user_addtime')->paginate(10);
+        // 获取分页显示
+        $page = $list->render();
         // 模板变量赋值
-        $this->assign('list', $userinfo);
+        $this->assign('list', $list);
         $this->assign('page', $page);
+        // 渲染模板输出
+        return view();   
+    }
+    public function message(){
+        $meun=new Index();$meun->index();
+        $bg_userinfo=json_decode(Session::get('bg_userinfo'),true);
+        $res=Message::where('user_id',$bg_userinfo['id'])->paginate(5);
+        $page = $res->render();
+        // 模板变量赋值
+        $this->assign('list', $res);
+        $this->assign('page', $page);
+        // 渲染模板输出
+        return view();   
+    }
+    public function showmessage(){
+        $meun=new Index();$meun->index();
+        $id=input('get.id');
+        $res=Message::where('id',$id)->join('admin a','Message.admin_id=a.admin_id')->field('content,addtime,admin_login_name')->find();
+        $res->status=1;
+        $res->save();
+        $this->assign('info',$res);
         return view();
+    }
+    public function deleteblog(){
+        $a_id=input('post.a_id');
+        $res=Article::where('a_id',$a_id)->delete();
+        if($res){
+            echo json_encode(['errcode'=>1,'msg'=>"删除成功"]);
+        }else{
+            echo json_encode(['errcode'=>2,'msg'=>"删除失败"]);
+        }
+    }
+    public function deleteattention(){
+        $id=input('post.id');
+        $res=Attention::where('id',$id)->delete();
+        if($res){
+            echo json_encode(['errcode'=>1,'msg'=>"删除成功"]);
+        }else{
+            echo json_encode(['errcode'=>2,'msg'=>"删除失败"]);
+        }
+    }
+    public function deletecomment(){
+        $id=input('post.id');
+        $res=Comment::where('comment_id',$id)->delete();
+        if($res){
+            echo json_encode(['errcode'=>1,'msg'=>"删除成功"]);
+        }else{
+            echo json_encode(['errcode'=>2,'msg'=>"删除失败"]);
+        }
+    }
+    public function deletemessage(){
+        $id=input('post.id');
+        $res=Message::where('id',$id)->delete();
+        if($res){
+            echo json_encode(['errcode'=>1,'msg'=>"删除成功"]);
+        }else{
+            echo json_encode(['errcode'=>2,'msg'=>"删除失败"]);
+        }
+    }
+    public function deletecollect(){
+        $id=input('post.id');
+        $res=Collect::where('id',$id)->delete();
+        if($res){
+            echo json_encode(['errcode'=>1,'msg'=>"删除成功"]);
+        }else{
+            echo json_encode(['errcode'=>2,'msg'=>"删除失败"]);
+        }
     }
 }

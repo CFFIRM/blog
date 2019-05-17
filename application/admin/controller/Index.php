@@ -3,6 +3,7 @@ namespace app\admin\controller;
 use think\Controller;
 use think\Db;
 use think\facade\Session;
+use think\facade\Cookie;
 use app\admin\model\User;
 use app\admin\model\Article;
 use app\admin\model\Comment;
@@ -12,6 +13,8 @@ use app\admin\model\Dislike;
 use app\admin\model\Attention;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use app\admin\model\Link;
+use app\admin\model\Advertising;
 class Index extends Controller 
 {
     public function index(){
@@ -19,6 +22,7 @@ class Index extends Controller
         $articleinfo=Article::where('a_private',0)->where('a_status',1)->join('user u','user.id=Article.a_user_id')->order('a_updatetime', 'desc')->paginate(10);
         $tuijian=Article::where('a_private',0)->order('a_like','desc')->limit(8)->select();
         $click=Article::where('a_private',0)->order('a_clickcount','desc')->limit(8)->select();
+        $Link=Link::order('l_addtime','desc')->limit(8)->select();
         $page = $articleinfo->render();
         // 模板变量赋值
         $this->assign('articleinfo',$articleinfo);
@@ -26,6 +30,7 @@ class Index extends Controller
         $this->assign('tuijian',$tuijian);
         $this->assign('click',$click);
         $this->assign('bg_userinfo',$bg_userinfo);//赋值给前台当前用户信息
+        $this->assign('link_info',$Link);//赋值给前台当前用户信息
         return view('showindex');
     }
     public function login(){
@@ -53,7 +58,7 @@ class Index extends Controller
                     $res->login_count=$res['login_count']+1;
                     $res=$res->save();
                     if($res){
-                        $this->success('登录成功','own');
+                        $this->success('登录成功','own/showinfo');
                     }else{
                         $this->error('登录失败');
                     }
@@ -89,9 +94,23 @@ class Index extends Controller
     public function findpwd(){
         if(request()->ispost()){
             $data=input("post.");
+            $user=User::where('user_email',$data['user_email'])->field('id')->find();
             $title="您正在找回密码";
-            $connect="http://www.blog.com/admin/index/findnow?user_email={$data['user_email']}";
-            $this->sendemail($data['user_email'],$connect);
+            $arr=[
+                'user_email'=>$data['user_email'],
+                'default'=>'cffirm',
+                'id'=>$user['id'],
+                'time'=>time()
+            ];
+            $token=base64_encode(http_build_query($arr));
+            $connect="http://www.blog.com/admin/index/findnow?token=".$token;
+            $res=$this->sendemail($data['user_email'],$connect,$title);
+            if($res){
+                Cookie::set('token',$token,1800);
+                $this->success('发送成功，请去邮箱查看，即将返回上一页面');
+            }else{
+                $this->error('发送失败');
+            }
         }else{
             return view();
         }
@@ -100,10 +119,11 @@ class Index extends Controller
         if(request()->ispost()){
             $id=input('post.id');
             $data['user_pwd']=input('post.user_pwd');
-            $data['again_pwd']=input('post.again_pwd');
-            if($data['user_pwd']!=$data['again_pwd']){
+            $again_pwd=input('post.again_pwd');
+            if($data['user_pwd']!=$again_pwd){
                 $this->error('两次密码输入不一致');
             }else{
+                $data['user_pwd']=md5($data['user_pwd']);
                 $user = new User;
                 // save方法第二个参数为更新条件
                 $res=$user->save($data,['id' => $id]);
@@ -115,10 +135,20 @@ class Index extends Controller
                 
             }
         }else{
-            $user_email=input('get.user_email');
-            $res=User::where('user_email', $user_email)->field('id')->find();
-            $this->assign('id',$res);
-            return view();    
+            $user_token=input('get.token');
+            $cok_token=Cookie::get('token');
+            if(Cookie::has('token')){
+                if($user_token==$cok_token){
+                    parse_str(base64_decode($user_token),$data);
+                    $this->assign('info',$data);
+                    return view();            
+                }else{
+                    $this->error("请检查链接是否完整");
+                }
+                
+            }else{
+                $this->error('邮件已失效，请重新申请',"login");
+            }
         }
         
     }
@@ -175,11 +205,14 @@ class Index extends Controller
         $result=Like::where('article_id',$a_id)->where('user_id',$bg_userinfo['id'])->find();
         $result1=Dislike::where('article_id',$a_id)->where('user_id',$bg_userinfo['id'])->find();
         $collect=Collect::where('article_id',$a_id)->where('user_id',$bg_userinfo['id'])->find();
+        $attention=Attention::where('user_id',$bg_userinfo['id'])->find();
+        $advertising=Advertising::select();
         $this->assign('like',$result);
         $this->assign('dislike',$result1);
         $this->assign('info',$info);
         $this->assign('shou',$collect);
         $this->assign('userinfo',$userinfo);
+        $this->assign('advertising',$advertising);
         return view();
     }
     /*public function changelike(){

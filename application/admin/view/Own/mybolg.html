@@ -15,15 +15,18 @@
 <script src="__STATIC__/vendor/jquery/jquery.min.js"></script>
 <script type="text/javascript">
   $(document).on('click','#delete',function(){
+    that=$(this).parents('li');
     if(confirm("确认删除么?删除后将无法恢复")){
       var a_id=$(this).parents('li').val();
       $.ajax({
-        url:"{:url('delete')}",
+        url:"{:url('deleteblog')}",
         dataType:"json",
         type:"POST",
         data:{a_id:a_id},
         success:function(res){
-          
+          if(res.errcode==1){
+            that.remove();
+          }
         }
       })
     }else{

@@ -114,7 +114,7 @@ $('#time').html(t);
   </div>
   <div class="infosbox">
     <div class="newsview">
-      <h3 class="news_title" style="text-align: center;">{$info.a_title}</h3>
+      <h3 class="news_title" style="text-align: center;" id="asdf" >{$info.a_title}</h3>
       <input type="hidden" name="a_id" id="a_id" value="{$info.a_id}">
       <input type="hidden" name="user_id" id="user_id" value="{$info.a_user_id}">
       <div class="bloginfo">
@@ -125,7 +125,7 @@ $('#time').html(t);
         </ul>
       </div>
       <div class="tags" style="margin:10px 50px;">
-        <p style="margin: 10px 50px;">{$info.a_content}</p>
+        <p style="margin: 10px 50px;">{$info.a_content|raw}</p>
       </div>
     <div class="share">
       <p class="diggit">
@@ -149,6 +149,10 @@ $('#time').html(t);
         {else /}
         <button class="btn btn-default" id="attention">已关注</button>
         {/if}
+        <div class="bdsharebuttonbox" style="width: 300px;height: 100px;margin-left: 300px;">
+        <a class="btn btn-default bds_tsina" href="#" data-cmd="tsina" style="height: 30px;" role="button">分享到微博</a>
+        <a class="btn btn-default bds_weixin" href="#" style="height: 30px;" data-cmd="weixin" role="button">分享到微信</a>
+        </div>
       </p>
     </div>
     <div class="news_pl" style="width: 550px;margin: 0 350px;">
@@ -164,6 +168,18 @@ $('#time').html(t);
         {/if}
       </div>
     </div>
+    <div style="margin: 20px 450px;">
+
+      <ul>
+        {foreach $advertising as $k=>$v}
+        {if empty($v.a_img)}
+          <li><a href="{$v.a_src}">{$v.a_desc}</a></li>
+        {else /}
+          <li><a href="{$v.a_src}" title="{$v.a_desc}"><img src="__STATIC__/uploads/{$v.a_img}" width="250px"></a></li>
+        {/if}
+        {/foreach}
+      </ul>
+    </div>
   </div>
 </article>
 <script type="text/javascript" charset="utf-8" src="__STATIC__/ueditor.config.js"></script>
@@ -171,6 +187,10 @@ $('#time').html(t);
 <script>
 var ue = UE.getEditor('content');
 </script>
+<script>
+    var content=$('#asdf').text();
+    window._bd_share_config={"common":{"bdSnsKey":{},"bdUrl":"http://www.blog.com/admin/index/showonce.html?a_id=2","bdText":content,"bdMini":"2","bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+  </script>
 <!-- <script type="text/javascript">
   $(document).on('click','#like',function(){
     var a_id=$('#a_id').val();

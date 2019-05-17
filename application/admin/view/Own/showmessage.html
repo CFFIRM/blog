@@ -52,22 +52,8 @@
 </head>
 <body>
 <header>
-  <div class="tou">
-      <div class="left">
-        {if empty($bg_userinfo)}
-        <h4>Hi,您好,现在是<b id="time"></b>,欢迎进入博文园</h4>
-        {else /}
-        <h4>Hi,{$bg_userinfo['user_nickname']},现在是<b id="time"></b>,欢迎登录</h4>
-        {/if}
-      </div>
-      <div class="right">
-        {if empty($bg_userinfo)}
-          <h4><a href="{:url('index/index')}">返回首页</a>&nbsp;&nbsp;&nbsp;[<a href="{:url('index/login')}">登录</a>|<a href="{:url('index/register')}">注册</a>]</h4>
-        {else /}
-          <h4>[<a href="{:url('index/index')}">返回首页</a>&nbsp;&nbsp;&nbsp;<a href="{:url('index/layout')}">退出</a>]</h4>
-        {/if}
-      </div>
-  </div>  
+  {include file="../application/admin/view/Common/a.html" /}
+  <block name="title"></block>
   <script>
 window.onload = function ()
 {
@@ -83,7 +69,6 @@ var t=mydate.toLocaleString();
 $('#time').html(t);
 </script> 
 </header>
-<div class="asdf"><h1>{$info.user_nickname}</h1></div>
 <div class="mnav">
     <ul>
       <li><a href="index.html">首页</a></li>
@@ -103,22 +88,6 @@ $('#time').html(t);
         <input name="Submit" class="input_submit" value="搜索" type="submit">
       </form>
     </div>
-    <div class="tuijian">
-      <h2>站长推荐</h2>
-      <ul>
-        {foreach $tuijian as $k=>$v}
-            <li><a href="{:url('showonce')}?a_id={$v.a_id}">{$v.a_title}</a></li>
-        {/foreach}
-      </ul>
-    </div>
-     <div class="tuijian">
-      <h2>点击排行</h2>
-      <ul>
-        {foreach $click as $k=>$v}
-            <li><a href="{:url('showonce')}?a_id={$v.a_id}">{$v.a_title}</a></li>
-        {/foreach}
-      </ul>
-    </div>
 <div class="cloud">
       <h2>标签云</h2>
       <ul>
@@ -129,21 +98,15 @@ $('#time').html(t);
 
   <div class="r_box">
     <div class="t01">
-      {foreach $list as $k=>$v}
       <li>
-        <h3><a href="{:url('index/showonce')}?a_id={$v.a_id}">{$v.a_title}</a></h3>
-        <input type="hidden" name="id" value="{$v.id}">
-        <p>{$v.a_content}</p>
-        <div style="margin-top: 10px;">
-          <span>作者：<a href="">{$v.user_nickname}</a></span>
-          <span>{$v.a_updatetime|date='Y-m-d H:i:s'}</span>
-          <span>赞({$v.a_like})</span>
-          <span>踩({$v.a_dislike})</span>
+        <h2 style="text-align: center;">通知</h2>
+        <h3 style="position: relative;">{$info.content}</h3>
+        <div>
+          <span >时间：{$info.addtime|date='Y-m-d H:i:s'}</span>
+          <span >来自管理员：{$info.admin_login_name}</span>
         </div>
       </li>
-    {/foreach}
     </div>
-      {$page|raw}
   </div>
 </article>
 </body>

@@ -123,15 +123,16 @@
  
 <body>
 <div class="header" id="head">
-  <div class="title">博客登录</div>
+  <div class="title">找回密码</div>
 </div>
   
-<form action="{:url('findpwd')}" method="POST">
+<form action="{:url('findnow')}" method="POST">
   <div class="wrap" id="wrap">
     <div class="logGet">
         <!-- 头部提示信息 -->
         <div class="logD logDtip">
           <p class="p1">找回密码</p>
+          <input type="hidden" name="id" value="{$info.id}">
         </div>
         <div class="lgD">
           <input type="password" placeholder="请输入您的新密码" name="user_pwd" pattern="\w{6,12}" required=""/>

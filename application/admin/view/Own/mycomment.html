@@ -13,7 +13,27 @@
 <link href="__STATIC__/css/index.css" rel="stylesheet">
 <link href="__STATIC__/css/m.css" rel="stylesheet">
 <script src="__STATIC__/vendor/jquery/jquery.min.js"></script>
-
+<script type="text/javascript">
+  $(document).on('click','#delete',function(){
+    that=$(this).parents('li');
+    if(confirm("确认删除么?删除后将无法恢复")){
+      var a_id=$(this).parents('li').val();
+      $.ajax({
+        url:"{:url('deletecomment')}",
+        dataType:"json",
+        type:"POST",
+        data:{id:a_id},
+        success:function(res){
+          if(res.errcode==1){
+            that.remove();
+          }
+        }
+      })
+    }else{
+      return false;
+    }
+  })
+</script>
 <style type="text/css">
   .tou{
     width: 100%;
@@ -103,7 +123,8 @@ $('#time').html(t);
         </li>
       {else /}
       {foreach $list as $k=>$v}
-      <li>
+      <li style="position: relative;" value="{$v.comment_id}">
+        <span style="position: absolute;right: 15px; top: 0;" class="x01"><button type="button" class="btn btn-default" id="delete" style="border:none;">X</button></span>
         <h3>标题：<a href="{:url('index/showonce')}?a_id={$v.a_id}">{$v.a_title}</a></h3>
         <p>评论内容：{$v.comment_text|raw}
           {if $v.comment_status==1}

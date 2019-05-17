@@ -1,4 +1,4 @@
- <!doctype html>
+<!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -36,15 +36,6 @@
   .tou .right a{
     color: rgba(255,255,255,0.8);
   }
-
-  .asdf{
-      width: 100%;
-  }
-  .asdf h1{
-    margin-top: 50px;
-    margin-left: 400px;
-    margin-bottom:60px;
-  }
 </style>
 <!--[if lt IE 9]>
 <script src="js/modernizr.js"></script>
@@ -52,22 +43,8 @@
 </head>
 <body>
 <header>
-  <div class="tou">
-      <div class="left">
-        {if empty($bg_userinfo)}
-        <h4>Hi,您好,现在是<b id="time"></b>,欢迎进入博文园</h4>
-        {else /}
-        <h4>Hi,{$bg_userinfo['user_nickname']},现在是<b id="time"></b>,欢迎登录</h4>
-        {/if}
-      </div>
-      <div class="right">
-        {if empty($bg_userinfo)}
-          <h4><a href="{:url('index/index')}">返回首页</a>&nbsp;&nbsp;&nbsp;[<a href="{:url('index/login')}">登录</a>|<a href="{:url('index/register')}">注册</a>]</h4>
-        {else /}
-          <h4>[<a href="{:url('index/index')}">返回首页</a>&nbsp;&nbsp;&nbsp;<a href="{:url('index/layout')}">退出</a>]</h4>
-        {/if}
-      </div>
-  </div>  
+  {include file="../application/admin/view/Common/a.html" /}
+  <block name="title"></block>
   <script>
 window.onload = function ()
 {
@@ -83,7 +60,6 @@ var t=mydate.toLocaleString();
 $('#time').html(t);
 </script> 
 </header>
-<div class="asdf"><h1>{$info.user_nickname}</h1></div>
 <div class="mnav">
     <ul>
       <li><a href="index.html">首页</a></li>
@@ -104,46 +80,39 @@ $('#time').html(t);
       </form>
     </div>
     <div class="tuijian">
-      <h2>站长推荐</h2>
+      <h2>个人中心</h2>
       <ul>
-        {foreach $tuijian as $k=>$v}
-            <li><a href="{:url('showonce')}?a_id={$v.a_id}">{$v.a_title}</a></li>
-        {/foreach}
-      </ul>
-    </div>
-     <div class="tuijian">
-      <h2>点击排行</h2>
-      <ul>
-        {foreach $click as $k=>$v}
-            <li><a href="{:url('showonce')}?a_id={$v.a_id}">{$v.a_title}</a></li>
-        {/foreach}
-      </ul>
-    </div>
-<div class="cloud">
-      <h2>标签云</h2>
-      <ul>
-        <a href="/">陌上花开</a> <a href="/">校园生活</a> <a href="/">html5</a> <a href="/">SumSung</a> <a href="/">青春</a> <a href="/">温暖</a> <a href="/">阳光</a> <a href="/">三星</a><a href="/">索尼</a> <a href="/">华维荣耀</a> <a href="/">三星</a> <a href="/">索尼</a>
+        <li><a href="{:url('mycollect')}">我的收藏</a></li>
+        <li><a href="{:url('mycomment')}">我的评论</a></li>
+        <li style="font-weight: bold;"><a href="{:url('likeme')}">我的粉丝</a></li>
+        <li><a href="{:url('like')}">我的推荐</a></li>
+        <li><a href="{:url('set')}">信息设置</a></li>
+        <li><a href="{:url('write')}">写博客</a></li>
+        <li><a href="{:url('mybolg')}">我的博文</a></li>
       </ul>
     </div>
   </div>
-
   <div class="r_box">
     <div class="t01">
-      {foreach $list as $k=>$v}
-      <li>
-        <h3><a href="{:url('index/showonce')}?a_id={$v.a_id}">{$v.a_title}</a></h3>
-        <input type="hidden" name="id" value="{$v.id}">
-        <p>{$v.a_content}</p>
-        <div style="margin-top: 10px;">
-          <span>作者：<a href="">{$v.user_nickname}</a></span>
-          <span>{$v.a_updatetime|date='Y-m-d H:i:s'}</span>
-          <span>赞({$v.a_like})</span>
-          <span>踩({$v.a_dislike})</span>
-        </div>
-      </li>
-    {/foreach}
+      {if empty($bg_userinfo)}
+      <li><h4>您还没有登录，请先登录[<a href="{:url('index/login')}">登录</a>|<a href="{:url('index/register')}">注册</a>]</h4></li>
+      {else /}
+      {if empty($list[0])}
+        <li>
+          <h4>暂无关注</h4>
+        </li>
+      {else /}
+        {foreach $list as $k=>$v}
+          <li>
+            <h3><a href="{:url('anyone')}?id={$v.id}">{$v.user_nickname}</a></h3>
+            <span>您关注的时间：{$v.addtime|date='Y-m-d H:i:s'}</span><br>
+            <span>{$v.user_nickname}注册时间：{$v.user_addtime|date='Y-m-d H:i:s'}</span>
+          </li>
+        {/foreach}  
+      {/if}
+      {/if}
     </div>
-      {$page|raw}
+    {$page|raw}
   </div>
 </article>
 </body>
