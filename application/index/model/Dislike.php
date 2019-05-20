@@ -3,7 +3,6 @@ namespace app\index\model;
 
 use think\Model;
 
-class Advertising extends Model
+class Dislike extends Model
 {
-	
 }

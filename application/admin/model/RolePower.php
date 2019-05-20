@@ -3,6 +3,7 @@ namespace app\admin\model;
 
 use think\Model;
 
-class Link extends Model
+class RolePower extends Model
 {
+	
 }

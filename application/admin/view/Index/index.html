@@ -1,156 +1,193 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<title>login</title>
-<style type="text/css">
-*{
-  margin: 0;
-  padding: 0;
-}
-#wrap {
-  height: 719px;
-  width: 100;
-  background-image: url(4.jpg);
-  background-repeat: no-repeat;
-  background-position: center center;
-  position: relative;
-}
-#head {
-  height: 120px;
-  width: 100;
-  background-color: #66CCCC;
-  text-align: center;
-  position: relative;
-}
-#foot {
-  width: 100;
-  height: 126px;
-  background-color: #CC9933;
-  position: relative;
-}
-#wrap .logGet {
-  height: 408px;
-  width: 368px;  
-  position: absolute;
-  background-color: #FFFFFF;
-  top: 20%;
-  right: 15%;
-}
-.logC .button {
-  width: 100%;
-  height: 45px;
-  background-color: #ee7700;
-  border: none;
-  color: white;
-  font-size: 18px;
-}
-.logGet .logD.logDtip .p1 {
-  display: inline-block;
-  font-size: 28px;
-  margin-top: 30px;
-  width: 86%;
-}
-#wrap .logGet .logD.logDtip {
-  width: 86%;
-  border-bottom: 1px solid #ee7700;
-  margin-bottom: 60px;
-  margin-top: 0px;
-  margin-right: auto;
-  margin-left: auto;
-}
-.logGet .lgD img {
-  position: absolute;
-  top: 12px;
-  left: 8px;
-}
-.logGet .lgD input {
-  width: 100%;
-  height: 42px;
-  text-indent: 2.5rem;
-}
-#wrap .logGet .lgD {
-  width: 86%;
-  position: relative;
-  margin-bottom: 30px;
-  margin-top: 30px;
-  margin-right: auto;
-  margin-left: auto;
-}
-#wrap .logGet .logC {
-  width: 86%;
-  margin-top: 0px;
-  margin-right: auto;
-  margin-bottom: 0px;
-  margin-left: auto;
-}
- 
- 
-.title {
-  font-family: "宋体";
-  color: #FFFFFF;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);  /* 使用css3的transform来实现 */
-  font-size: 36px;
-  height: 40px;
-  width: 30%;
-}
- 
-.copyright {
-  font-family: "宋体";
-  color: #FFFFFF;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);  /* 使用css3的transform来实现 */
-  height: 60px;
-  width: 40%;
-  text-align:center;
-}
-.logR{
-  width: 200px;
-  height: 20px;
-  margin:30px 30px;
-}
-.logR .a02{
-  position: absolute;
-  right: 30px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Carbon - Admin Template</title>
+    <link rel="stylesheet" href="__STATIC__/vendor/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="__STATIC__/vendor/font-awesome/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="__STATIC__/css/styles.css">
 </head>
- 
-<body>
-<div class="header" id="head">
-  <div class="title">博客登录</div>
+<body class="sidebar-fixed header-fixed">
+<div class="page-wrapper">
+    <nav class="navbar page-header">
+        <a href="#" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
+            <i class="fa fa-bars"></i>
+        </a>
+
+
+        <a href="#" class="btn btn-link sidebar-toggle d-md-down-none">
+            <i class="fa fa-bars"></i>
+        </a>
+
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item d-md-down-none">
+                <a href="#">
+                    <i class="fa fa-bell"></i>
+                    <span class="badge badge-pill badge-danger">5</span>
+                </a>
+            </li>
+
+            <li class="nav-item d-md-down-none">
+                <a href="#">
+                    <i class="fa fa-envelope-open"></i>
+                    <span class="badge badge-pill badge-danger">5</span>
+                </a>
+            </li>
+            {include file="../application/index/view/Meun/meun.html" /}
+                    <block name="head"></block>
+                    
+        </ul>
+    </nav>
+
+    <div class="main-container">
+        <!-- <div class="sidebar">
+            <nav class="sidebar-nav">
+                <ul class="nav">
+                    <li class="nav-title">Navigation</li>
+
+                    <li class="nav-item">
+                        <a href="{:url('index/after')}" class="nav-link active">
+                            <i class="icon icon-speedometer"></i> 首页
+                        </a>
+                    </li>
+                    {foreach $listinfo as $k=>$v}
+                        <li class="nav-item nav-dropdown">
+                        {if $v.level==1}
+                        <a href="#" class="nav-link nav-dropdown-toggle">
+                            <i class="icon icon-target"></i>{$v.power_name}<i class="fa fa-caret-left"></i>
+                        </a>
+
+                        <ul class="nav-dropdown-items">
+                            {foreach $listinfo as $key=>$value}
+                            {if $value.f_id==$v.power_id}
+                            <li class="nav-item">
+                                <a href='' class="nav-link">
+                                    <i class="icon icon-target"></i> {$value.power_name}
+                                </a>
+                            </li>
+                            {/if}
+                            {/foreach}    
+                        </ul>
+                        {/if}
+                    </li>
+                    {/foreach}
+
+                    <li class="nav-item">
+                        <a href="{:url('form/f_list')}" class="nav-link">
+                            <i class="icon icon-puzzle"></i> 表格
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{:url('form/compile')}" class="nav-link">
+                            <i class="icon icon-grid"></i> 表单
+                        </a>
+                    </li>
+                    <li class="nav-item nav-dropdown">
+                        <a href="#" class="nav-link nav-dropdown-toggle">
+                            <i class="icon icon-target"></i>权限管理<i class="fa fa-caret-left"></i>
+                        </a>
+
+                        <ul class="nav-dropdown-items">
+                            <li class="nav-item">
+                                <a href="{:url('layouts/role_list')}" class="nav-link">
+                                    <i class="icon icon-target"></i> 角色列表
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{:url('powerc/user_list')}" class="nav-link">
+                                    <i class="icon icon-target"></i> 用户列表
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{:url('powerc/poweradd')}" class="nav-link">
+                                    <i class="icon icon-target"></i> 权限管理
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </nav>
+        </div> -->
+        {include file="../application/index/view/Meun/meun.html" /}
+        <block name="meun"></block>
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card p-4">
+                            
+                            <div class="card-body d-flex justify-content-between align-items-center">
+                                <div>
+                                    
+                                    <span class="h4 d-block font-weight-normal mb-2">欢迎登录，{$userinfo.admin_login_name}</span>
+                                    <span class="font-weight-light" id="time"></span>
+                                </div>
+                                <div class="h2 text-muted">
+                                    <i class="icon icon-people"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row ">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                Total Users
+                            </div>
+
+                            <div class="card-body p-0">
+                                <div class="p-4">
+                                    <canvas id="line-chart" width="100%" height="20"></canvas>
+                                </div>
+
+                                <div class="justify-content-around mt-4 p-4 bg-light d-flex border-top d-md-down-none">
+                                    <div class="text-center">
+                                        <div class="text-muted small">Total Traffic</div>
+                                        <div>12,457 Users (40%)</div>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <div class="text-muted small">Banned Users</div>
+                                        <div>95,333 Users (5%)</div>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <div class="text-muted small">Page Views</div>
+                                        <div>957,565 Pages (50%)</div>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <div class="text-muted small">Total Downloads</div>
+                                        <div>957,565 Files (100 TB)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-  
-<form action="{:url('login')}" method="POST">
-  <div class="wrap" id="wrap">
-    <div class="logGet">
-        <!-- 头部提示信息 -->
-        <div class="logD logDtip">
-          <p class="p1">登录</p>
-        </div>
-        <!-- 输入框 -->
-        <div class="lgD">
-          <input type="text"
-            placeholder="输入用户名" name="user_name" />
-        </div>
-        <div class="lgD">
-          <input type="password"
-            placeholder="输入用户密码" name="user_pwd" />
-        </div>
-        <div class="logC">
-          <input type="submit" class="button" value="Login" name="">
-        </div>
-        <div class="logR">
-          <a href="{:url('findpwd')}" class="a01">找回密码</a>
-          <a href="{:url('register')}" class="a02">注册</a>
-        </div>
-      </div>
-  </div>
-</form>
+<script src="__STATIC__/vendor/jquery/jquery.min.js"></script>
+<script src="__STATIC__/vendor/popper.js/popper.min.js"></script>
+<script src="__STATIC__/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="__STATIC__/vendor/chart.js/chart.min.js"></script>
+<script src="__STATIC__/js/carbon.js"></script>
+<script src="__STATIC__/js/demo.js"></script>
+<script type="text/javascript">
+    var mydate = new Date();
+    var t=mydate.toLocaleString();
+    $('#time').html(t);
+</script>
 </body>
 </html>

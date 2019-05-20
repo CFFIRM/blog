@@ -11,7 +11,7 @@
 
 // [ 应用入口文件 ]
 namespace think;
-define('BLOG_URL','http://www.blog.com');
+define('BLOG_URL','http://www.blog.com/');
 // 加载基础文件
 require __DIR__ . '/../thinkphp/base.php'; 
 

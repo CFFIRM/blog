@@ -5,5 +5,4 @@ use think\Model;
 
 class Word extends Model
 {
-	
 }
