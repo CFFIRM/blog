@@ -55,9 +55,11 @@ for(i=1;i<As.length;i++){if(window.location.href.indexOf(As[i].href)>=0)
   obj=As[i];}
   obj.id='selected';
 }
-var mydate = new Date();
-var t=mydate.toLocaleString();
-$('#time').html(t);
+setInterval(function(){
+  var mydate = new Date();
+  var t=mydate.toLocaleString();
+  $('#time').html(t);
+},1000)
 </script> 
 </header>
 <div class="mnav">
@@ -115,12 +117,13 @@ $('#time').html(t);
       {foreach $articleinfo as $k=>$v}
       <li>
         <h3><a href="{:url('showonce')}?a_id={$v.a_id}">{$v.a_title}</a></h3>
-        <p>{$v.a_content|raw}</p>
+        <p>摘要：{$v.a_content|substr=0,225}&nbsp;<a href="{:url('showonce')}?a_id={$v.a_id}" style="color: blue">查看全文</a></p>
         <div style="margin-top: 10px;">
           <span>作者：{$v.user_nickname}</span>
           <span>{$v.a_updatetime|date='Y-m-d H:i:s'}</span>
           <span>赞({$v.a_like})</span>
           <span>踩({$v.a_dislike})</span>
+          <span>点击量({$v.a_clickcount})</span>
         </div>
       </li>
     {/foreach}

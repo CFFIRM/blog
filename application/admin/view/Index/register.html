@@ -118,6 +118,9 @@
   position: absolute;
   right: 30px;
 }
+.xx{
+  border:1px solid red;
+}
 </style>
 </head>
  
@@ -126,7 +129,7 @@
   <div class="title">博客登录</div>
 </div>
   
-<form action="{:url('register')}" method="POST">
+<form action="{:url('register')}" method="POST" onsubmit="return asdf()">
   <div class="wrap" id="wrap">
     <div class="logGet">
         <!-- 头部提示信息 -->
@@ -136,11 +139,13 @@
         <!-- 输入框 -->
         <div class="lgD">
           <input type="text"
-            placeholder="请输入您的登录名称,此项用于登录账号来使用" name="user_name" required="" onblur=""/>
+            placeholder="请输入您的登录名称,此项用于登录账号来使用" id="user_name" onblur="checkname()" name="user_name" required="" onblur=""/>
+            <span id="e03"></span>
         </div>
         <div class="lgD">
           <input type="text"
-            placeholder="请输入您的昵称" name="user_nickname" required="" onblur=""/>
+            placeholder="请输入您的昵称" name="user_nickname" id="user_nickname" onblur="checknickname()" required="" onblur=""/>
+            <span id="e02"></span>
         </div>
         <div class="lgD">
           <input type="password"
@@ -151,20 +156,19 @@
           <input type="password"
             placeholder="请再次输入密码" id="again_pwd" name="again_pwd" onblur="fun1()" pattern="\w{6,12}" required=""/><text id="t02" style="color: red"></text>
         </div>
-
         <div class="lgD">
-          <input type="email"
-            placeholder="请输入您的邮箱" name="user_email" required=""/>
+          <input type="email" placeholder="请输入您的邮箱" name="user_email" id="user_email" onblur="checkemail()" required=""/>
+          <span id="e01"></span>
         </div>
         <div class="lgD">
-          <input type="text"
-            placeholder="请输入您的手机号" name="user_tel" pattern="(1[3578]\d{9})" required=""/>
+          <input type="text" placeholder="请输入您的手机号" name="user_tel" onblur="checktel()" id="user_tel" pattern="(1[3578]\d{9})" required=""/>
+          <span id="e04"></span>
         </div>
         <div class="logC">
           <input type="submit" class="button" value="Submit" name="">
         </div>
         <div class="logR">
-          <a href="{:url('index')}" class="a01">登录</a>
+          <a href="{:url('login')}" class="a01">登录</a>
         </div>
       </div>
   </div>
@@ -177,6 +181,98 @@
     var again=$('#again_pwd').val();
     if(pwd!=again){
       $('#t02').html("两次密码输入不一致");
+    }
+  }
+  function checkemail(){
+      var user_email=$('#user_email').val();
+      $.ajax({
+        url:"{:url('checkregister')}",
+        data:{user_email:user_email},
+        dataType:"json",
+        type:"POST",
+        success:function(res){
+          if(res.errcode==1){
+            $('#e01').html('可以使用的邮箱');
+            blog=true;
+          }else{
+            $('#e01').html('该邮箱已被注册');
+            $('#user_email').attr('class','xx');
+            blog=false;
+          }
+          
+        }
+      })
+        return blog;
+
+  }
+  function checknickname(){
+      var user_nickname=$('#user_nickname').val();
+      $.ajax({
+        url:"{:url('checkregister')}",
+        data:{user_nickname:user_nickname},
+        dataType:"json",
+        type:"POST",
+        success:function(res){
+          if(res.errcode==1){
+            $('#e02').html('可以使用的昵称');
+            blog=true;
+          }else{
+            $('#e02').html('该昵称已被注册');
+            $('#user_nickname').attr('class','xx');
+            blog=false;
+          }
+        }
+      })
+      return blog;
+  }
+  function checkname(){
+      var user_name=$('#user_name').val();
+      $.ajax({
+        url:"{:url('checkregister')}",
+        data:{user_name:user_name},
+        dataType:"json",
+        type:"POST",
+        success:function(res){
+          if(res.errcode==1){
+            $('#e03').html('可以使用的登录名称');
+            blog=true;
+          }else{
+            $('#e03').html('该登录名称已被注册');
+            $('#user_name').attr('class','xx');
+            blog=false;
+          } 
+        }
+      })
+      return blog;
+  }
+  function checktel(){
+    var user_tel=$('#user_tel').val();
+      $.ajax({
+        url:"{:url('checkregister')}",
+        data:{user_tel:user_tel},
+        dataType:"json",
+        type:"POST",
+        success:function(res){
+          if(res.errcode==1){
+            $('#e04').html('可以使用的手机号');
+            blog=true;
+          }else{
+            $('#e04').html('该手机号已被注册');
+            $('#user_tel').attr('class','xx');
+            blog=false;
+          }
+        }
+      })
+      return blog;
+  }
+  function asdf(){
+    if(checkemail() == true &&checkname() == true &&checktel() == true &&checknickname() == true){
+      console.log(checkemail());
+      return true;
+    }else{
+      alert("请检验后再提交");
+      console.log(456);
+      return false;
     }
   }
 </script>

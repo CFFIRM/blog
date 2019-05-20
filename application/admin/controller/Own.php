@@ -71,7 +71,11 @@ class Own extends Controller
     public function like(){
         $meun=new Index();$meun->index();
         $bg_userinfo=json_decode(Session::get('bg_userinfo'),true);
-        $list = Like::where('user_id',$bg_userinfo['id'])->join('article a','like.article_id=a.a_id')->paginate(10);
+        $list = Like::where('user_id',$bg_userinfo['id'])
+                    ->join('article a','like.article_id=a.a_id')
+                    ->join('user u','a.a_user_id=u.id')
+                    ->field('a_id,a_title,a_content,a_updatetime,a_like,a_dislike,a_collect,a_clickcount,id,user_nickname')
+                    ->paginate(10);
         // 获取分页显示
         $page = $list->render();
         // 模板变量赋值
@@ -169,7 +173,9 @@ class Own extends Controller
         $bg_userinfo=json_decode(Session::get('bg_userinfo'),true);
         $id=$bg_userinfo['id'];
         // 查询状态为1的用户数据 并且每页显示10条数据
-        $list = Article::where('a_user_id',$id)->paginate(10);
+        $list = Article::where('a_user_id',$id)->paginate(10)->each(function($k,$v){
+            $k->a_content=strip_tags($k->a_content);
+        });
         // 获取分页显示
         $page = $list->render();
         // 模板变量赋值
@@ -184,7 +190,7 @@ class Own extends Controller
         if(empty($page)){
             Cookie::set('user_id',$id);
             $userinfo=Article::where('a_user_id',$id)->join('user u','Article.a_user_id=u.id')->field('id,user_nickname,a_id,a_title,a_content,a_updatetime,a_like,a_dislike,a_collect')->paginate(10);
-            $userdeinfo=Article::where('a_user_id',$id)->join('user u','Article.a_user_id=u.id')->field('id,user_nickname')->find()->toArray();
+            $userdeinfo=Article::where('a_user_id',$id)->join('user u','Article.a_user_id=u.id')->field('id,user_nickname')->find();
             $page = $userinfo->render();
             // 模板变量赋值
             $this->assign('list', $userinfo);
@@ -207,7 +213,7 @@ class Own extends Controller
     public function myattention(){
         $meun=new Index();$meun->index();
         $bg_userinfo=json_decode(Session::get('bg_userinfo'),true);
-        $list = Attention::where('user_id',$bg_userinfo['id'])->join('user u','Attention.attention_user_id=u.id')->field('Attention.id,Attention.addtime,user.user_nickname,user.user_addtime')->paginate(10);
+        $list = Attention::where('user_id',$bg_userinfo['id'])->join('user u','Attention.attention_user_id=u.id')->field('u.id,Attention.addtime,user.user_nickname,user.user_addtime')->paginate(10);
         // 获取分页显示
         $page = $list->render();
         // 模板变量赋值

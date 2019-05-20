@@ -10,3 +10,6 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+ function string_replace($str,$start,$length,$string="****"){
+ 	return substr_replace($str,$string,$start,$length);
+ }

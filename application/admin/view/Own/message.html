@@ -83,9 +83,11 @@ for(i=1;i<As.length;i++){if(window.location.href.indexOf(As[i].href)>=0)
   obj=As[i];}
   obj.id='selected';
 }
-var mydate = new Date();
-var t=mydate.toLocaleString();
-$('#time').html(t);
+setInterval(function(){
+  var mydate = new Date();
+  var t=mydate.toLocaleString();
+  $('#time').html(t);
+},1000)
 </script> 
 </header>
 <div class="mnav">
@@ -133,12 +135,18 @@ $('#time').html(t);
 
   <div class="r_box">
     <div class="t01">
+      {if empty($list[0])}
+        <li>
+          <h4>暂无消息</h4>
+        </li>
+      {else /}
       {foreach $list as $k=>$v}
       <li style="position: relative;" value="{$v.id}">
         <span style="position: absolute;right: 15px; top: 0;" class="x01"><button type="button" class="btn btn-default" id="delete" style="border:none;">X</button></span>
         <h3 style="position: relative;"><a href="{:url('own/showmessage')}?id={$v.id}">{$v.content}{$v.status==0? '【未读】':'【已读】'}</a><span style="position: absolute;right: 0;">时间：{$v.addtime|date='Y-m-d H:i:s'}</span></h3>
       </li>
     {/foreach}
+    {/if}
     </div>
       {$page|raw}
   </div>

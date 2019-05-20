@@ -78,9 +78,11 @@ for(i=1;i<As.length;i++){if(window.location.href.indexOf(As[i].href)>=0)
   obj=As[i];}
   obj.id='selected';
 }
-var mydate = new Date();
-var t=mydate.toLocaleString();
-$('#time').html(t);
+setInterval(function(){
+  var mydate = new Date();
+  var t=mydate.toLocaleString();
+  $('#time').html(t);
+},1000)
 </script> 
 </header>
 <div class="asdf"><h1>{$info.user_nickname}</h1></div>
@@ -129,19 +131,26 @@ $('#time').html(t);
 
   <div class="r_box">
     <div class="t01">
-      {foreach $list as $k=>$v}
-      <li>
-        <h3><a href="{:url('index/showonce')}?a_id={$v.a_id}">{$v.a_title}</a></h3>
-        <input type="hidden" name="id" value="{$v.id}">
-        <p>{$v.a_content}</p>
-        <div style="margin-top: 10px;">
-          <span>作者：<a href="">{$v.user_nickname}</a></span>
-          <span>{$v.a_updatetime|date='Y-m-d H:i:s'}</span>
-          <span>赞({$v.a_like})</span>
-          <span>踩({$v.a_dislike})</span>
-        </div>
-      </li>
-    {/foreach}
+      {if empty($list[0])}
+        <li>
+          <h4>暂无文章</h4>
+        </li>
+      {else /}
+        {foreach $list as $k=>$v}
+        <li>
+          <h3><a href="{:url('index/showonce')}?a_id={$v.a_id}">{$v.a_title}</a></h3>
+          <input type="hidden" name="id" value="{$v.id}">
+          <p>{$v.a_content}</p>
+          <div style="margin-top: 10px;">
+            <span>作者：<a href="">{$v.user_nickname}</a></span>
+            <span>{$v.a_updatetime|date='Y-m-d H:i:s'}</span>
+            <span>赞({$v.a_like})</span>
+            <span>踩({$v.a_dislike})</span>
+          </div>
+        </li>
+      {/foreach}
+      {/if}
+      
     </div>
       {$page|raw}
   </div>

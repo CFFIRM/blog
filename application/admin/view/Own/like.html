@@ -55,9 +55,11 @@ for(i=1;i<As.length;i++){if(window.location.href.indexOf(As[i].href)>=0)
   obj=As[i];}
   obj.id='selected';
 }
-var mydate = new Date();
-var t=mydate.toLocaleString();
-$('#time').html(t);
+setInterval(function(){
+  var mydate = new Date();
+  var t=mydate.toLocaleString();
+  $('#time').html(t);
+},1000)
 </script> 
 </header>
 <div class="mnav">
@@ -107,7 +109,7 @@ $('#time').html(t);
         <h3><a href="{:url('index/showonce')}?a_id={$v.a_id}">{$v.a_title}</a></h3>
         <p>{$v.a_content}</p>
         <div style="margin-top: 10px;">
-          <span>作者：<a href="">{$bg_userinfo['user_nickname']}</a></span>
+          <span>作者：<a href="{:url('anyone')}?id={$v.id}">{$v.user_nickname}</a></span>
           <span>{$v.a_updatetime|date='Y-m-d H:i:s'}</span>
           <span>赞({$v.a_like})</span>
           <span>踩({$v.a_dislike})</span>

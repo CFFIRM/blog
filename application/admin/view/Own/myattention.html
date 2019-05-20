@@ -55,9 +55,11 @@ for(i=1;i<As.length;i++){if(window.location.href.indexOf(As[i].href)>=0)
   obj=As[i];}
   obj.id='selected';
 }
-var mydate = new Date();
-var t=mydate.toLocaleString();
-$('#time').html(t);
+setInterval(function(){
+  var mydate = new Date();
+  var t=mydate.toLocaleString();
+  $('#time').html(t);
+},1000)
 </script> 
 </header>
 <div class="mnav">
@@ -84,7 +86,7 @@ $('#time').html(t);
       <ul>
         <li><a href="{:url('mycollect')}">我的收藏</a></li>
         <li><a href="{:url('mycomment')}">我的评论</a></li>
-        <li style="font-weight: bold;"><a href="{:url('likeme')}">我的粉丝</a></li>
+        <li><a href="{:url('likeme')}">我的粉丝</a></li>
         <li><a href="{:url('like')}">我的推荐</a></li>
         <li><a href="{:url('set')}">信息设置</a></li>
         <li><a href="{:url('write')}">写博客</a></li>

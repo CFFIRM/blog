@@ -65,9 +65,11 @@ for(i=1;i<As.length;i++){if(window.location.href.indexOf(As[i].href)>=0)
   obj=As[i];}
   obj.id='selected';
 }
-var mydate = new Date();
-var t=mydate.toLocaleString();
-$('#time').html(t);
+setInterval(function(){
+  var mydate = new Date();
+  var t=mydate.toLocaleString();
+  $('#time').html(t);
+},1000)
 </script> 
 </header>
 <div class="mnav">
@@ -124,11 +126,12 @@ $('#time').html(t);
           <li class="view">{$info.a_clickcount}人已阅读</li>
         </ul>
       </div>
-      <div class="tags" style="margin:10px 50px;">
+      <div class="tags" style="padding-left:350px; margin:10px 50px;">
         <p style="margin: 10px 50px;">{$info.a_content|raw}</p>
       </div>
-    <div class="share">
+    <div class="share" style="padding-left:350px; margin-top: 50px;">
       <p class="diggit">
+        <div class="bdsharebuttonbox" style="width: 300px;height: 100px;">
         {if !isset($like)}
         <button class="btn btn-default" id="like">赞({$info.a_like})</button>
         {else /}
@@ -144,12 +147,12 @@ $('#time').html(t);
         {else /}
         <button class="btn btn-default" id="collect">已收藏({$info.a_collect})</button>
         {/if}
-        {if !isset($guanzhu)}
+        {if !isset($attention)}
         <button class="btn btn-default" id="attention">关注</button>
         {else /}
         <button class="btn btn-default" id="attention">已关注</button>
         {/if}
-        <div class="bdsharebuttonbox" style="width: 300px;height: 100px;margin-left: 300px;">
+        
         <a class="btn btn-default bds_tsina" href="#" data-cmd="tsina" style="height: 30px;" role="button">分享到微博</a>
         <a class="btn btn-default bds_weixin" href="#" style="height: 30px;" data-cmd="weixin" role="button">分享到微信</a>
         </div>
@@ -189,7 +192,7 @@ var ue = UE.getEditor('content');
 </script>
 <script>
     var content=$('#asdf').text();
-    window._bd_share_config={"common":{"bdSnsKey":{},"bdUrl":"http://www.blog.com/admin/index/showonce.html?a_id=2","bdText":content,"bdMini":"2","bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    window._bd_share_config={"common":{"bdSnsKey":{},"bdUrl":"http://www.blog.com/admin/index/showonce.html?a_id=2","bdText":content,"bdMini":"2","bdPic":"","bdStyle":"0","bdSize":"16","bdMiniList":  ['tsina','weixin']},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
   </script>
 <!-- <script type="text/javascript">
   $(document).on('click','#like',function(){
@@ -374,8 +377,8 @@ var ue = UE.getEditor('content');
       success:function(res){
         var t='';
         if(res.errcode==0){
-          t="暂无评论";
-          $('.t02').html(t);
+          t="暂无更多评论";
+          $('.t02').append(t);
         }else{
           $.each(res.data,function(k,v){
             t+='<div style="border-bottom:1px solid #ccc;">';

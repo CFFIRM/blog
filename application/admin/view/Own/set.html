@@ -55,9 +55,11 @@ for(i=1;i<As.length;i++){if(window.location.href.indexOf(As[i].href)>=0)
   obj=As[i];}
   obj.id='selected';
 }
-var mydate = new Date();
-var t=mydate.toLocaleString();
-$('#time').html(t);
+setInterval(function(){
+  var mydate = new Date();
+  var t=mydate.toLocaleString();
+  $('#time').html(t);
+},1000)
 </script> 
 </header>
 <div class="mnav">
@@ -116,7 +118,7 @@ $('#time').html(t);
         </form>
       </li>
       <li class="t03" style="position: relative;">
-        <h3 >手机号：{$bg_userinfo.user_tel}<button type="button" style="position: absolute; right: 10px; border: none;" class="btn btn-default change3">修改</button></h3>
+        <h3 >手机号：{$bg_userinfo.user_tel|string_replace=3,4}<button type="button" style="position: absolute; right: 10px; border: none;" class="btn btn-default change3">修改</button></h3>
         <hr>
         <form method="POST" action="{:url('changeuser')}">
         <div class="a04">
@@ -134,7 +136,7 @@ $('#time').html(t);
         </form>
       </li>
       <li class="t05" style="position: relative;">
-        <h3 >密码：{$bg_userinfo.user_pwd}<button type="button" style="position: absolute; right: 10px; border: none;" class="btn btn-default change5">修改</button></h3>
+        <h3 >密码：******<button type="button" style="position: absolute; right: 10px; border: none;" class="btn btn-default change5">修改</button></h3>
         <hr>
         <form method="POST" action="{:url('changeuser')}">
         <div class="a06">
