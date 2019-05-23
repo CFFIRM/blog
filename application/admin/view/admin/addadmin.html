@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Carbon - Admin Template</title>
+    <link rel="stylesheet" href="__STATIC__/vendor/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="__STATIC__/vendor/font-awesome/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="__STATIC__/css/styles.css">
+</head>
+<body class="sidebar-fixed header-fixed">
+<div class="page-wrapper">
+    <nav class="navbar page-header">
+            <a href="#" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
+                <i class="fa fa-bars"></i>
+            </a>
+
+
+            <a href="#" class="btn btn-link sidebar-toggle d-md-down-none">
+                <i class="fa fa-bars"></i>
+            </a>
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item d-md-down-none">
+                    <a href="#">
+                        <i class="fa fa-bell"></i>
+                        <span class="badge badge-pill badge-danger">5</span>
+                    </a>
+                </li>
+
+                <li class="nav-item d-md-down-none">
+                    <a href="#">
+                        <i class="fa fa-envelope-open"></i>
+                        <span class="badge badge-pill badge-danger">5</span>
+                    </a>
+                </li>
+
+                {include file="../application/admin/view/Meun/meun.html" /}
+                    <block name="head"></block>
+            </ul>
+        </nav>
+
+    <div class="main-container">
+        {include file="../application/admin/view/Meun/meun.html" /}
+        <block name="meun"></block>
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                Basic Forms
+                            </div>
+                            <div class="card-body">
+                                <form action="{:url('addadmin')}" method="post" onsubmit="fun1()">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="normal-input" class="form-control-label">管理员名称</label>
+                                                <input class="form-control" name="admin_login_name" id="admin_login_name" placeholder="请输入管理员名称" required="">
+                                                <span id="t01"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="normal-input" class="form-control-label">管理员密码</label>
+                                                <input type="password" id="admin_login_pwd" class="form-control" name="admin_login_pwd" pattern="[\w]{6,30}" required="" placeholder="密码应为6~30位，有大写小写字母以及特殊字符">
+                                                <p id="s01"></p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="normal-input" class="form-control-label">确认密码</label>
+                                                <input type="password" id="normal-input" pattern="[\w]{6,30}" class="form-control" name="again_pwd" placeholder="请再次输入密码" required="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="normal-input" class="form-control-label">管理员手机</label>
+                                                <input class="form-control" id="admin_tel" name="admin_tel" placeholder="请输入您的手机号" required="">
+                                                <span id="t02"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="normal-input" class="form-control-label">管理员邮箱</label>
+                                                <input type="email" class="form-control" id="admin_email" name="admin_email" placeholder="请输入管理员邮箱" required="">
+                                                <span id="t03"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="normal-input" class="form-control-label">管理员角色</label>
+                                                <select id="level" name="role_id">
+                                                    {foreach $data as $k=>$v}
+                                                    <option value="{$v.role_id}">{$v.role_name}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                            <div class="form-group" style="margin-left:15px">
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fa fa-align-center"></i>提交
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" charset="utf-8" src="__STATIC__/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__STATIC__/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="__STATIC__/lang/zh-cn/zh-cn.js"></script>
+<script src="__STATIC__/vendor/jquery/jquery.min.js"></script>
+<script src="__STATIC__/vendor/popper.js/popper.min.js"></script>
+<script src="__STATIC__/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="__STATIC__/vendor/chart.js/chart.min.js"></script>
+<script src="__STATIC__/js/carbon.js"></script>
+<script src="__STATIC__/js/demo.js"></script>
+<script type="text/javascript">
+    var blog=false;
+    $(document).on('blur','#admin_login_name',function(){
+        var name=$(this).val();
+        $.ajax({
+            url:"{:url('checkname')}",
+            dataType:"json",
+            type:"POST",
+            data:{name:name},
+            success:function(res){
+                if(res.errcode==0){
+                    $('#t01').html("可以使用");
+                    blog=true;
+                }else{
+                    $('#t01').html("已经被使用");
+                    blog=false;
+                }
+            }
+        })
+    })
+    $(document).on('blur','#admin_tel',function(){
+        var name=$(this).val();
+        $.ajax({
+            url:"{:url('checkname')}",
+            dataType:"json",
+            type:"POST",
+            data:{tel:name},
+            success:function(res){
+                if(res.errcode==0){
+                    $('#t02').html("可以使用");
+                    blog=true;
+                }else{
+                    $('#t02').html("已经被使用,一个手机号只能注册一个");
+                    blog=false;
+                }
+            }
+        })
+    })
+    $(document).on('blur','#admin_email',function(){
+        var name=$(this).val();
+        $.ajax({
+            url:"{:url('checkname')}",
+            dataType:"json",
+            type:"POST",
+            data:{email:name},
+            success:function(res){
+                if(res.errcode==0){
+                    $('#t03').html("可以使用");
+                    blog=true;
+                }else{
+                    $('#t03').html("该邮箱已经被使用");
+                    blog=false;
+                }
+            }
+        })
+    })
+    function fun1(){
+        if(blog){
+            return true;
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<block name='meun'>
+<div class="tou">
+      <div class="left">
+        {if empty($bg_userinfo)}
+        <h4>Hi,您好,现在是<b id="time"></b>,欢迎进入博文园</h4>
+        {else /}
+        <h4>Hi,{$bg_userinfo['user_nickname']},现在是<b id="time"></b>,欢迎登录</h4>
+        {/if}
+      </div>
+      <div class="right">
+        {if empty($bg_userinfo)}
+          <h4>[<a href="{:url('Index/login')}">登录</a>|<a href="{:url('Index/register')}">注册</a>]</h4>
+        {else /}
+          <h4>[<a href="{:url('Own/message')}">消息</a>|<a href="{:url('Index/layout')}">退出</a>]</h4>
+        {/if}
+      </div>
+  </div>
+  <div class="logo"></div>
+    <nav id="nav">
+    <ul>
+      <li><a href="{:url('Index/index')}">随便看看</a></li>
+      <li><a href="{:url('Own/showinfo')}">个人中心</a></li>
+    </ul>
+  </nav>
+</block>

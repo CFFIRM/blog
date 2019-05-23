@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Carbon - Admin Template</title>
+    <link rel="stylesheet" href="__STATIC__/vendor/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="__STATIC__/vendor/font-awesome/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="__STATIC__/css/styles.css">
+</head>
+<body class="sidebar-fixed header-fixed">
+<div class="page-wrapper">
+    <nav class="navbar page-header">
+            <a href="#" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
+                <i class="fa fa-bars"></i>
+            </a>
+
+
+            <a href="#" class="btn btn-link sidebar-toggle d-md-down-none">
+                <i class="fa fa-bars"></i>
+            </a>
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item d-md-down-none">
+                    <a href="#">
+                        <i class="fa fa-bell"></i>
+                        <span class="badge badge-pill badge-danger">5</span>
+                    </a>
+                </li>
+
+                <li class="nav-item d-md-down-none">
+                    <a href="#">
+                        <i class="fa fa-envelope-open"></i>
+                        <span class="badge badge-pill badge-danger">5</span>
+                    </a>
+                </li>
+
+                {include file="../application/admin/view/Meun/meun.html" /}
+                    <block name="head"></block>
+            </ul>
+        </nav>
+    
+
+    <div class="main-container">
+        {include file="../application/admin/view/Meun/meun.html" /}
+        <block name="meun"></block>
+
+        <div class="content">
+            <div class="row">
+                <div class="card-body">
+                            <div class="table-responsive" style="margin-left: -100px;">
+                                <table class="table">
+                                    {if !isset($info[0])}
+                                        <tr>
+                                            <h1 style="text-align: center;">暂无数据</h1>
+                                        </tr>
+                                    {else /}
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>ID</th>
+                                        <th>管理员名称</th>
+                                        <th>管理员最后一次登录时间</th>
+                                        <th>管理员登录次数</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="t01">
+                                        {foreach $info as $k=>$v}
+                                            <tr id="{$v.admin_id}">
+                                                <td><input type="checkbox" class="check" value="{$v.admin_id}"></td>
+                                                <td>{$v.admin_id}</td>
+                                                <td class="text-nowrap">{$v.admin_login_name}</td>
+                                                <td>{$v.admin_last_logintime|date='Y-m-d H:i:s'}</td>
+                                                <td>{$v.admin_login_count}</td>
+                                                <td><a href="{:url('deleteadmin')}?id={$v.admin_id}">删除</a></td>
+                                            </tr>
+                                    {/foreach}
+                                    <button class="deleteall">批量删除</button>
+                                    </tbody>
+                                    {/if}
+                                </table>
+                            </div>
+                        </div>
+        </div>
+<div class="t02">
+    {$page|raw}
+</div>
+    </div>
+</div>
+<script src="__STATIC__/vendor/jquery/jquery.min.js"></script>
+<script src="__STATIC__/vendor/popper.js/popper.min.js"></script>
+<script src="__STATIC__/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="__STATIC__/vendor/chart.js/chart.min.js"></script>
+<script src="__STATIC__/js/carbon.js"></script>
+<script src="__STATIC__/js/demo.js"></script>
+    <script>
+        window.onload(
+            $(document).on('click','.deleteall',function(){
+                var ids=[];
+                $('.check:checked').each(function(){
+                    ids.push($(this).val());
+                });
+                var ids=ids.toString();
+                console.log(ids);
+                $.ajax({
+                    url:"check",
+                    dataType:"json",
+                    data:{k_id:ids},
+                    type:"GET",
+                    success:function(data){
+                        var tr="";
+                        $.each(data.data,function(k,v){
+                            tr+="<tr>";
+                            tr+='<td><input type="checkbox" class="check" value="'+ v.k_id+'"></td>';
+                            tr+='<td>'+v.k_id+'</td>';
+                            tr+='<td>'+v.k_name+'</td>';
+                            tr+='<td>'+v.k_max+'</td>';
+                            tr+='<td>'+v.k_score+'</td>';
+                            tr+='<td>'+v.k_type+'</td>';
+                            tr+='<td><a href="delete?k_id='+ v.k_id+'">删除</a></td>';
+                            tr+="</tr>";
+                        })
+                        $('.t01').html(tr);
+                    }
+                })
+            })
+            
+        )
+    </script>
+</body>
+</html>

@@ -5,4 +5,5 @@ use think\Model;
 
 class Message extends Model
 {
+
 }
