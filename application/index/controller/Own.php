@@ -37,7 +37,9 @@ class Own extends Controller
     public function mycollect(){
         $meun=new Index();$meun->index();
         $bg_userinfo=json_decode(Session::get('bg_userinfo'),true);
-        $list = Collect::where('user_id',$bg_userinfo['id'])->join('article a','Collect.article_id=a.a_id')->paginate(10);
+        $list = Collect::where('user_id',$bg_userinfo['id'])->join('article a','collect.article_id=a.a_id')->paginate(10)->each(function($item,$key){
+                $item->a_content=preg_replace("/(\s|\&nbsp\;|　|\xc2\xa0|\&#39\;)/", " ", strip_tags($item->a_content));
+            });
         // 获取分页显示
         $page = $list->render();
         // 模板变量赋值
@@ -49,7 +51,7 @@ class Own extends Controller
     public function mycomment(){
         $meun=new Index();$meun->index();
         $bg_userinfo=json_decode(Session::get('bg_userinfo'),true);
-        $list = Comment::where('user_id',$bg_userinfo['id'])->join('article a','Comment.article_id=a.a_id')->paginate(10);
+        $list = Comment::where('user_id',$bg_userinfo['id'])->join('article a','comment.article_id=a.a_id')->paginate(10);
         // 获取分页显示
         $page = $list->render();
         // 模板变量赋值
@@ -61,7 +63,7 @@ class Own extends Controller
     public function likeme(){
         $meun=new Index();$meun->index();
         $bg_userinfo=json_decode(Session::get('bg_userinfo'),true);
-        $list = Attention::where('attention_user_id',$bg_userinfo['id'])->join('user u','Attention.user_id=u.id')->paginate(10);
+        $list = Attention::where('attention_user_id',$bg_userinfo['id'])->join('user u','attention.user_id=u.id')->paginate(10);
         // 获取分页显示
         $page = $list->render();
         // 模板变量赋值
@@ -135,6 +137,7 @@ class Own extends Controller
         }
     }
     public function fillerword($string){
+        $stringAfter=$string;
         $wordarr=Word::field('word_name')->select()->toArray();
         $newstring="";    
         foreach ($wordarr as $key => $value) {
@@ -180,7 +183,7 @@ class Own extends Controller
         $id=$bg_userinfo['id'];
         // 查询状态为1的用户数据 并且每页显示10条数据
         $list = Article::where('a_user_id',$id)->paginate(10)->each(function($k,$v){
-            $item->a_content=preg_replace("/(\s|\&nbsp\;|　|\xc2\xa0|\&#39\;)/", " ", strip_tags($item->a_content));
+            $k->a_content=strip_tags($k->a_content);
         });
         // 获取分页显示
         $page = $list->render();
@@ -195,10 +198,8 @@ class Own extends Controller
         $page=input('get.page');
         if(empty($page)){
             Cookie::set('user_id',$id);
-            $userinfo=Article::where('a_user_id',$id)->join('user u','Article.a_user_id=u.id')->field('id,user_nickname,a_id,a_title,a_content,a_updatetime,a_like,a_dislike,a_collect')->paginate(10)->each(function($k,$v){
-            $item->a_content=preg_replace("/(\s|\&nbsp\;|　|\xc2\xa0|\&#39\;)/", " ", strip_tags($item->a_content));
-        });;
-            $userdeinfo=Article::where('a_user_id',$id)->join('user u','Article.a_user_id=u.id')->field('id,user_nickname')->find();
+            $userinfo=Article::where('a_user_id',$id)->join('user u','article.a_user_id=u.id')->field('id,user_nickname,a_id,a_title,a_content,a_updatetime,a_like,a_dislike,a_collect')->paginate(10);
+            $userdeinfo=Article::where('a_user_id',$id)->join('user u','article.a_user_id=u.id')->field('id,user_nickname')->find();
             $page = $userinfo->render();
             // 模板变量赋值
             $this->assign('list', $userinfo);
@@ -207,8 +208,8 @@ class Own extends Controller
             return view("Own/anyone");
         }else{
             $user_id=Cookie::get('user_id');
-            $userinfo=Article::where('a_user_id',$user_id)->join('user u','Article.a_user_id=u.id')->field('id,user_nickname,a_id,a_title,a_content,a_updatetime,a_like,a_dislike,a_collect')->paginate(10);
-            $userdeinfo=Article::where('a_user_id',$user_id)->join('user u','Article.a_user_id=u.id')->field('id,user_nickname')->find();
+            $userinfo=Article::where('a_user_id',$user_id)->join('user u','article.a_user_id=u.id')->field('id,user_nickname,a_id,a_title,a_content,a_updatetime,a_like,a_dislike,a_collect')->paginate(10);
+            $userdeinfo=Article::where('a_user_id',$user_id)->join('user u','article.a_user_id=u.id')->field('id,user_nickname')->find();
             $page = $userinfo->render();
             // 模板变量赋值
             $this->assign('list', $userinfo);
@@ -221,7 +222,7 @@ class Own extends Controller
     public function myattention(){
         $meun=new Index();$meun->index();
         $bg_userinfo=json_decode(Session::get('bg_userinfo'),true);
-        $list = Attention::where('user_id',$bg_userinfo['id'])->join('user u','attention.attention_user_id=u.id')->field('u.id,Attention.addtime,user.user_nickname,user.user_addtime')->paginate(10);
+        $list = Attention::where('user_id',$bg_userinfo['id'])->join('user u','attention.attention_user_id=u.id')->field('u.id,attention.addtime,user.user_nickname,user.user_addtime')->paginate(10);
         // 获取分页显示
         $page = $list->render();
         // 模板变量赋值
@@ -244,7 +245,7 @@ class Own extends Controller
     public function showmessage(){
         $meun=new Index();$meun->index();
         $id=input('get.id');
-        $res=Message::where('id',$id)->join('admin a','Message.admin_id=a.admin_id')->field('content,addtime,admin_login_name')->find();
+        $res=Message::where('id',$id)->join('admin a','message.admin_id=a.admin_id')->field('content,addtime,admin_login_name')->find();
         $res->status=1;
         $res->save();
         $this->assign('info',$res);
@@ -288,6 +289,9 @@ class Own extends Controller
     }
     public function deletecollect(){
         $id=input('post.id');
+        $asd=Message::where('id',$id)->field('article_id')->find();
+        $asd->a_collect=$asd->a_collect-1;
+        $asd->save();
         $res=Collect::where('id',$id)->delete();
         if($res){
             echo json_encode(['errcode'=>1,'msg'=>"删除成功"]);
@@ -311,7 +315,6 @@ class Own extends Controller
         if($data){
             $bg_userinfo=json_decode(Session::get('bg_userinfo'),true);
             $user=User::where('id',$bg_userinfo['id'])->find();
-            unlink("http://47.101.44.77:9918/static/userimg/".$user['user_img']);
             $user->user_img=$data;
             $user->save();
             return $data;

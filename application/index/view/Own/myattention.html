@@ -125,8 +125,12 @@ setInterval(function(){
         </li>
       {else /}
         {foreach $list as $k=>$v}
+<<<<<<< HEAD:application/index/view/Own/myattention.html
           <li style="position: relative;" value="{$v.id}">
             <span style="position: absolute;right: 15px;line-height: 100px;" class="x01"><button type="button" class="btn btn-default" id="delete" style="border:none;">取消关注</button></span>
+=======
+          <li>
+>>>>>>> 12ba1653232a4a26fbda14216b06747680cbb775:application/index/view/Own/myattention.html
             <h3><a href="{:url('Own/anyone')}?id={$v.id}">{$v.user_nickname}</a></h3>
             <span>您关注的时间：{$v.addtime|date='Y-m-d H:i:s'}</span><br>
             <span>{$v.user_nickname}注册时间：{$v.user_addtime|date='Y-m-d H:i:s'}</span>

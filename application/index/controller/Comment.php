@@ -10,6 +10,7 @@ class Comment extends Controller
 {
     public function addcomment(){
         $bg_userinfo=json_decode(Session::get('bg_userinfo'),true);
+<<<<<<< HEAD
         if($bg_userinfo['user_status']==1){
             echo json_encode(['errcode'=>3,'msg'=>"您的账号处于禁用状态，目前不能发表评论"]);
         }else{
@@ -26,6 +27,19 @@ class Comment extends Controller
             }
         }
     	
+=======
+    	$data=input('post.');
+    	$data['comment_addtime']=time();
+        $data['comment_text']=$this->fillerword($data['comment_text']);
+        $data['user_id']=$bg_userinfo['id'];
+    	$c=new C;
+    	$res=$c->save($data);
+    	if($res){
+    		echo json_encode(['errcode'=>1,'msg'=>"评论成功，待审核"]);
+    	}else{
+    		echo json_encode(['errcode'=>2,'msg'=>"评论失败"]);
+    	}
+>>>>>>> 12ba1653232a4a26fbda14216b06747680cbb775
     }
     public function fillerword($string){
         $wordarr=Word::field('word_name')->select()->toArray();

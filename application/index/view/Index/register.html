@@ -143,18 +143,15 @@
             <span id="e03"></span>
         </div>
         <div class="lgD">
-          <input type="text"
-            placeholder="请输入您的昵称" name="user_nickname" id="user_nickname" onblur="checknickname()" required="" onblur=""/>
+          <input type="text" placeholder="请输入您的昵称" name="user_nickname" id="user_nickname" onblur="checknickname()" required="" onblur=""/>
             <span id="e02"></span>
         </div>
         <div class="lgD">
-          <input type="password"
-            placeholder="请设置您的密码" id="user_pwd" name="user_pwd" required="" pattern="\w{6,12}" />
+          <input type="password" placeholder="请设置您的密码" id="user_pwd" name="user_pwd" required="" pattern="\w{6,12}" />
             <text id="t01" style="color: red"></text>
         </div>
         <div class="lgD">
-          <input type="password"
-            placeholder="请再次输入密码" id="again_pwd" name="again_pwd" onblur="fun1()" pattern="\w{6,12}" required=""/><text id="t02" style="color: red"></text>
+          <input type="password" placeholder="请再次输入密码" id="again_pwd" name="again_pwd" onblur="fun1()" pattern="\w{6,12}" required=""/><text id="t02" style="color: red"></text>
         </div>
         <div class="lgD">
           <input type="email" placeholder="请输入您的邮箱" name="user_email" id="user_email" onblur="checkemail()" required=""/>
@@ -200,7 +197,6 @@
             $('#user_email').attr('class','xx');
             blog=false;
           }
-          
         }
       })
         return blog;

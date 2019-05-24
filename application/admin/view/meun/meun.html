@@ -1,0 +1,70 @@
+<block name='meun'>
+    <div class="sidebar">
+            <nav class="sidebar-nav">
+                <ul class="nav">
+                    <li class="nav-title">Navigation</li>
+
+                    <li class="nav-item">
+                        <a href="{:url('index/after')}" class="nav-link active">
+                            <i class="icon icon-speedometer"></i> 首页
+                        </a>
+                    </li>
+                    {foreach $listinfo as $k=>$v}
+                        <li class="nav-item nav-dropdown">
+                        {if $v.level==1}
+                        <a href="#" class="nav-link nav-dropdown-toggle">
+                            <i class="icon icon-target"></i>{$v.power_name}<i class="fa fa-caret-left"></i>
+                        </a>
+
+                        <ul class="nav-dropdown-items">
+                            {foreach $listinfo as $key=>$value}
+                            {if $value.f_id==$v.power_id}
+                            <li class="nav-item">
+                                <a href="{:url($value.url)}" class="nav-link">
+                                    <i class="icon icon-target"></i> {$value.power_name}
+                                </a>
+                            </li>
+                            {/if}
+                            {/foreach}    
+                        </ul>
+                        {/if}
+                    </li>
+                    {/foreach}
+                </ul>
+            </nav>
+        </div>
+</block>
+<block name="head">
+    <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="__STATIC__/imgs/avatar-1.png" class="avatar avatar-sm" alt="logo">
+                    <span class="small ml-1 d-md-down-none">{$userinfo.admin_login_name}</span>
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-right">
+                    <div class="dropdown-header">Account</div>
+
+                    <a href="#" class="dropdown-item">
+                        <i class="fa fa-user"></i> Profile
+                    </a>
+
+                    <a href="#" class="dropdown-item">
+                        <i class="fa fa-envelope"></i> Messages
+                    </a>
+
+                    <div class="dropdown-header">Settings</div>
+
+                    <a href="#" class="dropdown-item">
+                        <i class="fa fa-bell"></i> Notifications
+                    </a>
+
+                    <a href="#" class="dropdown-item">
+                        <i class="fa fa-wrench"></i> Settings
+                    </a>
+
+                    <a href="{:url('index/logout')}" class="dropdown-item">
+                        <i class="fa fa-lock"></i> Logout
+                    </a>
+                </div>
+            </li>
+</block>

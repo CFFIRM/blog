@@ -20,8 +20,9 @@ class Index extends Controller
 {
     public function index(){
         $bg_userinfo=json_decode(Session::get('bg_userinfo'),true);
-        $articleinfo=Article::where('a_private',0)->where('a_status',1)->join('user u','user.id=Article.a_user_id')->order('a_updatetime', 'desc')->paginate(10)->each(function($item,$key){
-            $item->a_content=strip_tags($item->a_content);
+        $articleinfo=Article::where('a_private',0)->where('a_status',1)->join('user u','user.id=article.a_user_id')->order('a_updatetime', 'desc')->paginate(10)->each(function($item,$key){
+
+            $item->a_content=preg_replace("/(\s|\&nbsp\;|　|\xc2\xa0|\&#39\;)/", " ", strip_tags($item->a_content));
         });
         $tuijian=Article::where('a_private',0)->order('a_like','desc')->limit(8)->select();
         $click=Article::where('a_private',0)->order('a_clickcount','desc')->limit(8)->select();
@@ -41,7 +42,7 @@ class Index extends Controller
             $page=input('get.page');
             $page=$page+10;
             $articleinfo=Article::where('a_private',0)->where('a_status',1)->join('user u','user.id=article.a_user_id')->order('a_updatetime', 'desc')->limit($page,10)->select()->each(function($item,$key){
-                $item->a_content=strip_tags($item->a_content);
+                $item->a_content=preg_replace("/(\s|\&nbsp\;|　|\xc2\xa0|\&#39\;)/", " ", strip_tags($item->a_content));
                 $item->a_updatetime=date('Y-m-d H:i:s',$item->a_updatetime);
             });
             if(empty($articleinfo[0])){
@@ -53,7 +54,7 @@ class Index extends Controller
         }else{
             $bg_userinfo=json_decode(Session::get('bg_userinfo'),true);
             $articleinfo=Article::where('a_private',0)->where('a_status',1)->join('user u','user.id=article.a_user_id')->order('a_updatetime', 'desc')->paginate(10)->each(function($item,$key){
-                $item->a_content=strip_tags($item->a_content);
+                $item->a_content=preg_replace("/(\s|\&nbsp\;|　|\xc2\xa0|\&#39\;)/", " ", strip_tags($item->a_content));
             });
             $tuijian=Article::where('a_private',0)->order('a_like','desc')->limit(8)->select();
             $click=Article::where('a_private',0)->order('a_clickcount','desc')->limit(8)->select();
@@ -82,7 +83,7 @@ class Index extends Controller
                         $res->login_count=$res['login_count']+1;
                         $res=$res->save();
                         if($res){
-                            $this->success('登录成功','Own/showinfo');
+                            $this->redirect('Own/showinfo');
                         }else{
                             $this->error('登录失败');
                         }
@@ -142,7 +143,7 @@ class Index extends Controller
                 'time'=>time()
             ];
             $token=base64_encode(http_build_query($arr));
-            $connect="请将此链接复制到浏览器内http://47.101.44.77:9918/admin/index/findnow?token=".$token;
+            $connect="请将此链接复制到浏览器内http://47.101.44.77:9918/index/index/findnow?token=".$token;
             $res=$this->sendemail($data['user_email'],$connect,$title);
             if($res){
                 Cookie::set('token',$token,1800);
@@ -151,7 +152,7 @@ class Index extends Controller
                 $this->error('发送失败');
             }
         }else{
-            return view();
+            return view("Index/findpwd");
         }
     }
     public function findnow(){
@@ -180,7 +181,7 @@ class Index extends Controller
                 if($user_token==$cok_token){
                     parse_str(base64_decode($user_token),$data);
                     $this->assign('info',$data);
-                    return view();            
+                    return view("Index/findnow");            
                 }else{
                     $this->error("请检查链接是否完整");
                 }
@@ -200,7 +201,7 @@ class Index extends Controller
             unset($data['again_pwd']);
             Cache::set('user_register_info',$data,3600);
             $title="注册成功,请激活";
-            $connect="请将此链接复制到浏览器内http://47.101.44.77:9918/admin/index/activate,链接将在30分钟后过期，请尽快激活";
+            $connect="请将此链接复制到浏览器内http://47.101.44.77:9918/index/index/activate,链接将在30分钟后过期，请尽快激活";
             $result=$this->sendemail($data['user_email'],$connect,$title);
             if($result){
                 $this->success("邮箱已成功发送，请前往邮箱激活，邮件有效期为30分钟，即将返回上一页面"); 
@@ -483,7 +484,7 @@ class Index extends Controller
     public function loadcomment(){
         $a_id=input('post.a_id');
         $load=input('post.load');
-        $comment=Comment::where('article_id',$a_id)->where('comment_status',1)->order('comment_addtime','desc')->limit($load,3)->join('user c','Comment.user_id = c.id')->field('user_nickname,id,comment_text,comment_addtime')->select();
+        $comment=Comment::where('article_id',$a_id)->where('comment_status',1)->order('comment_addtime','desc')->limit($load,3)->join('user c','comment.user_id = c.id')->field('user_nickname,id,comment_text,comment_addtime')->select();
         foreach ($comment as $key => $value) {
             $value['comment_addtime']=date("Y-m-d H:i",$value['comment_addtime']); 
         }

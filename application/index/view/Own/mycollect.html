@@ -126,7 +126,10 @@ setInterval(function(){
       {else /}
       {foreach $list as $k=>$v}
       <li style="position: relative;" value="{$v.id}">
+<<<<<<< HEAD:application/index/view/Own/mycollect.html
         <span style="position: absolute;right: 15px; top: 0;" class="x01"><button type="button" class="btn btn-default" id="delete" style="border:none;">X</button></span>
+=======
+>>>>>>> 12ba1653232a4a26fbda14216b06747680cbb775:application/index/view/Own/mycollect.html
         <h3><a href="{:url('Index/showonce')}?a_id={$v.a_id}">{$v.a_title}</a></h3>
         <p>{$v.a_content|raw}</p>
         <div style="margin-top: 10px;">

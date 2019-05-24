@@ -75,32 +75,45 @@
                     new TipBox({type:'load',str:"努力加载中..",setTime:1500,callBack:function(){  
                         new TipBox({type:'success',str:'验证身份成功',hasBtn:true});
                         }});
-                    var str='<div class="form-group"><label class="form-control-label">Password</label><input type="hidden" name="admin_id" id="admin_id" value="'+res.data.admin_id+'"><input type="password" name="admin_login_pwd" id="admin_login_pwd" required="required"  pattern="[A-z0-9+-*/!@#$%^&*(){}[]_+=-?/、|`~]{6,30}" class="form-control" placeholder="密码应有大写小写字母与特殊字符"></div><div class="form-group"><label class="form-control-label">Confirm Password</label><input type="password" name="again_pwd" id="again_pwd" required="required" pattern="[A-z0-9+-*/!@#$%^&*(){}[]_+=-?/、|`~]{6,30}" class="form-control"></div>';
+                    var str='<div class="form-group"><label class="form-control-label">Password</label><input type="hidden" name="admin_id" id="admin_id" value="'+res.data.admin_id+'"><input type="password" name="admin_login_pwd" id="admin_login_pwd" required="required"  pattern="[A-Za-z0-9\\W]{6,30}" class="form-control" placeholder="密码应有大写小写字母与特殊字符" onblur="checkpwd()"><span id="asdf"></span></div><div class="form-group"><label class="form-control-label">Confirm Password</label><input type="password" name="again_pwd" id="again_pwd" required="required" pattern="[A-z0-9+-*/!@#$%^&*(){}[]_+=-?/、|`~]{6,30}" class="form-control"></div>';
                     $('#a01').html(str);
                 }
             }
         })
     })
-    $(document).on('blur','#admin_login_pwd',function asdf(){
-        var pwd=$(this).val();
-        var id=$('#admin_id').val();
-        $.ajax({
-            url:"{:url('check')}",
-            data:{id:id,pwd:pwd},
-            dataType:"json",
-            type:"POST",
-            success:function(res){
-                if(res.error==1){
-                    return false;
-                }else{
-                    return true;
-                }
+    var blog=false;
+    function checkpwd(){
+        $(document).on('blur','#admin_login_pwd',function(){
+            var pwd=$(this).val();
+            if(pwd ==""){
+                $('#asdf').html("不能为空");return;
             }
+            var id=$('#admin_id').val();
+            $.ajax({
+                url:"{:url('checkpwd')}",
+                data:{id:id,pwd:pwd},
+                dataType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res.error==1){
+                        blog=false;
+                        $('#asdf').html("与前三次密码重复");
+                    }else{
+                        blog=true;
+                        $('#asdf').html("");
+                    }
+                }
+            })
         })
-    })
+        return blog;
+    }
+    
     function fun1(){
-        if(asdf()){
+        if(checkpwd()==true){
             return true;
+        }else{
+            alert("请输入正确后提交");
+            return false;
         }
     }
 </script>
